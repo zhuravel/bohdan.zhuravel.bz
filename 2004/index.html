@@ -1,0 +1,412 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Bohdan Zhuravel's Homepage</title>
+<meta name="generator" content="Notepad, mostly">
+<meta name="description" content="The official homepage of Bohdan Zhuravel. Now with 20% more marquee.">
+<style type="text/css">
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    background-color: #b9cbe6;
+    background-image:
+      repeating-linear-gradient(135deg, rgba(255,255,255,.35) 0px, rgba(255,255,255,.35) 2px, transparent 2px, transparent 14px),
+      linear-gradient(#dbe6f5, #9fb8dd 45%, #b9cbe6);
+    background-attachment: fixed;
+    font-family: Verdana, Tahoma, Geneva, Arial, sans-serif;
+    font-size: 11px;
+    color: #111111;
+    padding: 22px 0 40px;
+  }
+  a { color: #1a4faa; }
+  a:visited { color: #6a3d9a; }
+  a:hover { color: #d3350f; }
+
+  table.page {
+    width: 760px;
+    margin: 0 auto;
+    background: #f5f7fb;
+    border-collapse: collapse;
+    border: 2px solid #294a7a;
+    box-shadow: 3px 3px 10px rgba(0,0,0,.35);
+  }
+
+  /* ── banner ── */
+  td.banner {
+    background-color: #2f5590;
+    background-image: linear-gradient(#6f95c9, #2f5590 55%, #1c3a66);
+    padding: 14px 16px 12px;
+    border-bottom: 2px solid #0f2547;
+  }
+  .banner h1 {
+    margin: 0;
+    font-family: "Times New Roman", Georgia, serif;
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 0 #0f2547, -1px -1px 0 rgba(255,255,255,.25);
+    letter-spacing: .5px;
+  }
+  .banner p {
+    margin: 2px 0 0;
+    font-size: 11px;
+    color: #d7e3f7;
+    font-style: italic;
+  }
+
+  /* ── marquee strip ── */
+  .welcome-marquee {
+    display: block;
+    background: #14294a;
+    color: #ffe680;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 4px 0;
+    border-bottom: 1px solid #0a162c;
+  }
+
+  /* ── nav column ── */
+  td.nav {
+    width: 140px;
+    background: #dce6f5;
+    border-right: 2px solid #7a9cc6;
+    padding: 12px 8px;
+    vertical-align: top;
+  }
+  .nav-title {
+    font-weight: bold;
+    font-size: 11px;
+    color: #294a7a;
+    border-bottom: 1px solid #7a9cc6;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .nav-btn {
+    display: block;
+    background: #eef3fb;
+    border: 1px solid;
+    border-color: #ffffff #6d87a8 #6d87a8 #ffffff;
+    padding: 4px 6px;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: #16324f;
+    font-weight: bold;
+    font-size: 11px;
+  }
+  .nav-btn:visited { color: #16324f; }
+  .nav-btn:hover {
+    background: #c7d9f2;
+    border-color: #6d87a8 #ffffff #ffffff #6d87a8;
+    color: #a5250f;
+  }
+  .nav-sep {
+    height: 1px;
+    background: #7a9cc6;
+    margin: 8px 0;
+  }
+  .nav-blurb {
+    margin-top: 10px;
+    font-size: 10px;
+    color: #3a537a;
+    line-height: 1.5;
+  }
+
+  /* ── content column ── */
+  td.content {
+    padding: 14px 16px 10px;
+    vertical-align: top;
+  }
+  h2.section {
+    background: #c7d9f2;
+    border-left: 4px solid #2f5590;
+    margin: 18px 0 6px;
+    padding: 3px 8px;
+    font-size: 13px;
+    color: #16324f;
+  }
+  h2.section.first { margin-top: 4px; }
+  p { line-height: 1.5; margin: 6px 0; }
+
+  /* ── under construction, animated in pure CSS ── */
+  .construction {
+    height: 30px;
+    margin: 10px 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: repeating-linear-gradient(45deg, #ffd400 0px, #ffd400 12px, #171717 12px, #171717 24px);
+    background-size: 200% 100%;
+    border: 2px solid #171717;
+    animation: bz-stripes 1.1s linear infinite;
+  }
+  .construction span {
+    background: #fff8dc;
+    border: 1px solid #171717;
+    padding: 2px 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 11px;
+    color: #171717;
+    animation: bz-blink 1s steps(1, start) infinite;
+  }
+  @keyframes bz-stripes { from { background-position: 0 0; } to { background-position: -34px 0; } }
+  @keyframes bz-blink { 50% { color: #c21d0e; } }
+  @media (prefers-reduced-motion: reduce) {
+    .construction, .construction span { animation: none; }
+  }
+
+  /* ── hit counter, LCD/odometer digits ── */
+  .counter-wrap { margin: 10px 0; font-size: 11px; }
+  .counter-label { color: #294a7a; }
+  .counter-digits {
+    display: inline-block;
+    background: #0c0c0c;
+    padding: 3px 4px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    box-shadow: inset 0 0 4px #000, 0 1px 0 #fff;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .digit {
+    display: inline-block;
+    width: 13px;
+    text-align: center;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 16px;
+    color: #37ff74;
+    text-shadow: 0 0 5px #21c85a, 0 0 1px #21c85a;
+  }
+
+  /* ── badges ── */
+  .badges { margin: 10px 0; }
+  .badge {
+    width: 88px;
+    height: 31px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    margin: 2px 5px 2px 0;
+    border: 1px solid #000;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .badge b { font-size: 11px; line-height: 11px; }
+  .badge i { font-style: normal; font-size: 8px; line-height: 9px; opacity: .85; }
+  .badge-mac { background: linear-gradient(#cfd8e2, #8a97a6 55%, #616d7a); color: #111; }
+  .badge-mac .glyph { width: 16px; height: 11px; border: 1px solid #333; background: #dff0ff; margin-bottom: 2px; }
+  .badge-coffee { background: linear-gradient(#7a4a26, #4a2a12); }
+  .badge-coffee .glyph { width: 9px; height: 7px; background: #f3d9b1; border-radius: 0 0 4px 4px; margin-bottom: 2px; }
+  .badge-valid { background: linear-gradient(#3a6ea5, #1f3f66); width: 80px; height: 15px; }
+  .badge-valid b { font-size: 8px; }
+  .badge-valid i { display: none; }
+
+  /* ── webring ── */
+  .webring {
+    margin: 10px 0;
+    border: 1px dashed #7a9cc6;
+    background: #eef3fb;
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+  .webring-title { font-weight: bold; color: #16324f; }
+  .webring-link { color: #1a4faa; text-decoration: underline; cursor: default; }
+
+  .fine-print { margin-top: 16px; font-size: 10px; color: #3a537a; line-height: 1.6; }
+
+  /* ── footer ── */
+  td.footer {
+    background: #dce6f5;
+    border-top: 2px solid #7a9cc6;
+    padding: 8px 16px;
+    font-size: 10px;
+    color: #3a537a;
+    text-align: center;
+  }
+
+  @media (max-width: 780px) {
+    table.page { width: 100%; }
+    td.nav { width: 100px; }
+  }
+      /* Aqua scrollers, same as the desktop around this page (Safari 1.2 drew them this way) */
+      ::-webkit-scrollbar { height: 15px; width: 15px; }
+      ::-webkit-scrollbar-track {
+        background: repeating-linear-gradient(#ececec 0, #ececec 1px, #f7f7f7 1px, #f7f7f7 2px);
+        box-shadow: inset 1px 0 0 #b3b3b3, inset 4px 0 4px -2px rgba(0, 0, 0, .16), inset -3px 0 3px -2px rgba(0, 0, 0, .1);
+      }
+      ::-webkit-scrollbar-track:horizontal {
+        background: repeating-linear-gradient(90deg, #ececec 0, #ececec 1px, #f7f7f7 1px, #f7f7f7 2px);
+        box-shadow: inset 0 1px 0 #b3b3b3, inset 0 4px 4px -2px rgba(0, 0, 0, .16), inset 0 -3px 3px -2px rgba(0, 0, 0, .1);
+      }
+      ::-webkit-scrollbar-thumb {
+        background-clip: padding-box;
+        background-image:
+          linear-gradient(90deg, rgba(255, 255, 255, 0) 8%, rgba(255, 255, 255, .7) 34%, rgba(255, 255, 255, .15) 58%, rgba(255, 255, 255, 0) 80%),
+          linear-gradient(90deg, #1d56c9 0%, #5b98ef 38%, #7db2f6 62%, #2c66d6 100%);
+        border: 2px solid transparent;
+        border-radius: 8px;
+        box-shadow: inset 0 0 0 1px rgba(12, 45, 125, .55);
+        min-height: 34px;
+      }
+      ::-webkit-scrollbar-thumb:horizontal {
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0) 8%, rgba(255, 255, 255, .7) 34%, rgba(255, 255, 255, .15) 58%, rgba(255, 255, 255, 0) 80%),
+          linear-gradient(#1d56c9 0%, #5b98ef 38%, #7db2f6 62%, #2c66d6 100%);
+        min-width: 34px;
+      }
+      html.inactive ::-webkit-scrollbar-thumb {
+        background-image: linear-gradient(90deg, #a2a2a2, #ececec 42%, #cfcfcf 62%, #9d9d9d);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .3);
+      }
+      ::-webkit-scrollbar-button { display: none; }
+      ::-webkit-scrollbar-button:vertical:end:decrement,
+      ::-webkit-scrollbar-button:vertical:end:increment,
+      ::-webkit-scrollbar-button:horizontal:end:decrement,
+      ::-webkit-scrollbar-button:horizontal:end:increment {
+        background-color: #f2f2f2;
+        background-position: center;
+        background-repeat: no-repeat;
+        box-shadow: inset 1px 0 0 #b3b3b3, inset 0 1px 0 #c8c8c8;
+        display: block;
+        height: 16px;
+        width: 15px;
+      }
+      ::-webkit-scrollbar-button:horizontal:end:decrement, ::-webkit-scrollbar-button:horizontal:end:increment { height: 15px; width: 16px; }
+      ::-webkit-scrollbar-button:vertical:end:decrement { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='7' height='5'><path d='M3.5 0 7 5H0z' fill='%23404040'/></svg>"), linear-gradient(90deg, #dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      ::-webkit-scrollbar-button:vertical:end:increment { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='7' height='5'><path d='M0 0h7L3.5 5z' fill='%23404040'/></svg>"), linear-gradient(90deg, #dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      ::-webkit-scrollbar-button:horizontal:end:decrement { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='5' height='7'><path d='M0 3.5 5 0v7z' fill='%23404040'/></svg>"), linear-gradient(#dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      ::-webkit-scrollbar-button:horizontal:end:increment { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='5' height='7'><path d='M0 0l5 3.5L0 7z' fill='%23404040'/></svg>"), linear-gradient(#dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      ::-webkit-scrollbar-button:active { filter: brightness(.8); }
+      ::-webkit-scrollbar-corner { background: #ececec; }
+
+      @supports not selector(::-webkit-scrollbar) { * { scrollbar-color: #4f8ee8 #ededed; } }
+    </style>
+</head>
+<body>
+
+<table class="page" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td class="banner" colspan="2">
+      <h1>Bohdan Zhuravel's Homepage</h1>
+      <p>software engineer &middot; keeper of this fine webpage</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <marquee behavior="scroll" direction="left" scrollamount="3" class="welcome-marquee">Welcome&nbsp;to&nbsp;my&nbsp;homepage!&nbsp;&nbsp;&nbsp;&#183;&#183;&#183;&nbsp;&nbsp;&nbsp;thanks&nbsp;for&nbsp;stopping&nbsp;by&nbsp;&nbsp;&nbsp;&#183;&#183;&#183;&nbsp;&nbsp;&nbsp;don't&nbsp;forget&nbsp;to&nbsp;sign&nbsp;the&nbsp;guestbook&nbsp;&nbsp;&nbsp;&#183;&#183;&#183;&nbsp;&nbsp;&nbsp;</marquee>
+    </td>
+  </tr>
+  <tr>
+    <td class="nav">
+      <div class="nav-title">Navigate</div>
+      <a class="nav-btn" href="index.html">&raquo; Home</a>
+      <a class="nav-btn" href="#about">&raquo; About</a>
+      <a class="nav-btn" href="#links">&raquo; Links</a>
+      <a class="nav-btn" href="guestbook.html">&raquo; Guestbook</a>
+      <div class="nav-sep"></div>
+      <div class="nav-blurb">
+        This site looks best in<br>
+        <b>Safari&nbsp;1.2</b><br>
+        at 1024&times;768.
+      </div>
+    </td>
+    <td class="content">
+
+      <h2 class="section first">Under Construction</h2>
+      <div class="construction" role="img" aria-label="Under construction"><span>UNDER&nbsp;CONSTRUCTION</span></div>
+
+      <h2 class="section" id="about">About Me</h2>
+      <p>
+        Hi, I'm Bohdan &mdash; Software Engineer at Talkable. During the day I write code that
+        (mostly) does what it's supposed to; the rest of the time I still mostly write code,
+        if I'm being honest with myself.
+      </p>
+      <p>
+        I like computers. Most of all I like watching an idea turn into something that actually
+        works &mdash; and knowing which tool to reach for is half the craft. I enjoy a good
+        mechanical keyboard, a strong cup of coffee, and the kind of late&#8209;night refactor
+        that definitely could have waited until morning but somehow never does.
+      </p>
+      <p>
+        This page is a small, cheerfully outdated tribute to the homepages of 2004 &mdash; back
+        when everyone had one, nobody had heard of a "responsive layout," and a good marquee
+        tag was the height of self&#8209;expression.
+      </p>
+
+      <h2 class="section" id="links">Links</h2>
+      <p>
+        &raquo; <a href="https://github.com/zhuravel" target="_blank" rel="noopener">My GitHub</a> &mdash; where the code lives<br>
+        &raquo; <a href="https://www.linkedin.com/in/bohdanzhuravel/" target="_blank" rel="noopener">My LinkedIn</a> &mdash; the professional version of this page<br>
+        &raquo; <a class="js-email" href="#" data-reveal="keep">Email me!</a> &mdash; say hi
+      </p>
+
+      <div class="counter-wrap">
+        <span class="counter-label">You are visitor number</span>
+        <span class="counter-digits" id="hitCounter" aria-label="hit counter">
+          <span class="digit">0</span><span class="digit">0</span><span class="digit">0</span><span class="digit">0</span><span class="digit">4</span><span class="digit">2</span>
+        </span>
+        <noscript>&nbsp;(counter requires JavaScript, same as it did in 2004)</noscript>
+      </div>
+
+      <div class="badges">
+        <span class="badge badge-mac"><span class="glyph"></span><b>MADE ON A</b><i>MACINTOSH</i></span>
+        <span class="badge badge-coffee"><span class="glyph"></span><b>POWERED BY</b><i>COFFEE</i></span>
+        <span class="badge badge-valid"><b>VALID XHTML 1.0*</b></span>
+      </div>
+      <p class="fine-print">*results may vary, validator not included, please don't check</p>
+
+      <div class="webring">
+        <span class="webring-title">Toolsmiths Webring</span>
+        &nbsp;&nbsp;<span class="webring-link">&laquo; Prev</span> | <span class="webring-link">Random</span> | <span class="webring-link">Next &raquo;</span>
+        <div class="fine-print">A completely fictional webring for people who pick the right tool.</div>
+      </div>
+
+      <p class="fine-print">Best viewed in Safari 1.2 at 1024&times;768. Also probably fine in other things.</p>
+
+    </td>
+  </tr>
+  <tr>
+    <td class="footer" colspan="2">
+      &copy; 2004 Bohdan Zhuravel &middot; Last updated: Tuesday, March&nbsp;09,&nbsp;2004 &middot; <a href="guestbook.html">sign my guestbook</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+(function () {
+  var el = document.getElementById("hitCounter");
+  if (!el) return;
+  var n = 41;
+  try {
+    var stored = window.localStorage.getItem("bz2004.hits");
+    n = stored ? (parseInt(stored, 10) || 41) : 41;
+    n += 1;
+    window.localStorage.setItem("bz2004.hits", String(n));
+  } catch (e) {
+    n = 42;
+  }
+  var s = String(n);
+  while (s.length < 6) s = "0" + s;
+  var digits = el.getElementsByTagName("span");
+  for (var i = 0; i < digits.length && i < s.length; i++) {
+    digits[i].firstChild ? (digits[i].firstChild.nodeValue = s.charAt(i)) : (digits[i].appendChild(document.createTextNode(s.charAt(i))));
+  }
+})();
+</script>
+
+  <script src="../js/email.js"></script>
+  <script src="../js/safari-bridge.js"></script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Guestbook - Bohdan Zhuravel's Homepage</title>
+<style type="text/css">
+  html, body { margin: 0; padding: 0; }
+  body {
+    background-color: #b9cbe6;
+    background-image:
+      repeating-linear-gradient(135deg, rgba(255,255,255,.35) 0px, rgba(255,255,255,.35) 2px, transparent 2px, transparent 14px),
+      linear-gradient(#dbe6f5, #9fb8dd 45%, #b9cbe6);
+    background-attachment: fixed;
+    font-family: Verdana, Tahoma, Geneva, Arial, sans-serif;
+    font-size: 11px;
+    color: #111111;
+    padding: 22px 0 40px;
+  }
+  a { color: #1a4faa; }
+  a:visited { color: #6a3d9a; }
+  a:hover { color: #d3350f; }
+
+  table.page {
+    width: 760px;
+    margin: 0 auto;
+    background: #f5f7fb;
+    border-collapse: collapse;
+    border: 2px solid #294a7a;
+    box-shadow: 3px 3px 10px rgba(0,0,0,.35);
+  }
+
+  td.banner {
+    background-color: #2f5590;
+    background-image: linear-gradient(#6f95c9, #2f5590 55%, #1c3a66);
+    padding: 14px 16px 12px;
+    border-bottom: 2px solid #0f2547;
+  }
+  .banner h1 {
+    margin: 0;
+    font-family: "Times New Roman", Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 0 #0f2547, -1px -1px 0 rgba(255,255,255,.25);
+  }
+  .banner p { margin: 2px 0 0; font-size: 11px; color: #d7e3f7; font-style: italic; }
+
+  td.nav {
+    width: 140px;
+    background: #dce6f5;
+    border-right: 2px solid #7a9cc6;
+    padding: 12px 8px;
+    vertical-align: top;
+  }
+  .nav-title {
+    font-weight: bold;
+    font-size: 11px;
+    color: #294a7a;
+    border-bottom: 1px solid #7a9cc6;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .nav-btn {
+    display: block;
+    background: #eef3fb;
+    border: 1px solid;
+    border-color: #ffffff #6d87a8 #6d87a8 #ffffff;
+    padding: 4px 6px;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: #16324f;
+    font-weight: bold;
+    font-size: 11px;
+  }
+  .nav-btn:visited { color: #16324f; }
+  .nav-btn:hover {
+    background: #c7d9f2;
+    border-color: #6d87a8 #ffffff #ffffff #6d87a8;
+    color: #a5250f;
+  }
+
+  td.content { padding: 14px 16px 10px; vertical-align: top; }
+  h2.section {
+    background: #c7d9f2;
+    border-left: 4px solid #2f5590;
+    margin: 4px 0 6px;
+    padding: 3px 8px;
+    font-size: 13px;
+    color: #16324f;
+  }
+  p { line-height: 1.5; margin: 6px 0; }
+
+  .gb-form {
+    background: #eef3fb;
+    border: 1px solid #7a9cc6;
+    padding: 10px;
+    margin: 8px 0 16px;
+  }
+  .gb-form table { border-collapse: collapse; }
+  .gb-form td { padding: 3px 4px; vertical-align: top; }
+  .gb-form label { font-weight: bold; color: #16324f; }
+  .gb-form input[type="text"], .gb-form textarea {
+    font-family: Verdana, Tahoma, Geneva, Arial, sans-serif;
+    font-size: 11px;
+    border: 1px solid;
+    border-color: #6d87a8 #ffffff #ffffff #6d87a8;
+    padding: 2px 3px;
+    width: 260px;
+  }
+  .gb-form textarea { height: 50px; }
+  .gb-submit {
+    font-family: Verdana, Tahoma, Geneva, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 11px;
+    padding: 3px 14px;
+    background: linear-gradient(#f4f7fb, #c7d9f2);
+    border: 1px solid;
+    border-color: #ffffff #6d87a8 #6d87a8 #ffffff;
+    color: #16324f;
+    cursor: pointer;
+  }
+  .gb-submit:active { border-color: #6d87a8 #ffffff #ffffff #6d87a8; }
+  .gb-note { font-size: 10px; color: #3a537a; margin-top: 4px; }
+
+  .gb-entry {
+    border: 1px solid #b9cbe6;
+    background: #ffffff;
+    margin: 0 0 8px;
+    padding: 6px 8px;
+  }
+  .gb-entry .gb-who { font-weight: bold; color: #16324f; }
+  .gb-entry .gb-when { color: #6d87a8; font-size: 10px; }
+  .gb-entry .gb-msg { margin-top: 3px; white-space: pre-wrap; word-wrap: break-word; }
+
+  td.footer {
+    background: #dce6f5;
+    border-top: 2px solid #7a9cc6;
+    padding: 8px 16px;
+    font-size: 10px;
+    color: #3a537a;
+    text-align: center;
+  }
+
+  @media (max-width: 780px) {
+    table.page { width: 100%; }
+    td.nav { width: 100px; }
+    .gb-form input[type="text"], .gb-form textarea { width: 90%; }
+  }
+      /* Aqua scrollers, same as the desktop around this page (Safari 1.2 drew them this way) */
+      ::-webkit-scrollbar { height: 15px; width: 15px; }
+      ::-webkit-scrollbar-track {
+        background: repeating-linear-gradient(#ececec 0, #ececec 1px, #f7f7f7 1px, #f7f7f7 2px);
+        box-shadow: inset 1px 0 0 #b3b3b3, inset 4px 0 4px -2px rgba(0, 0, 0, .16), inset -3px 0 3px -2px rgba(0, 0, 0, .1);
+      }
+      ::-webkit-scrollbar-track:horizontal {
+        background: repeating-linear-gradient(90deg, #ececec 0, #ececec 1px, #f7f7f7 1px, #f7f7f7 2px);
+        box-shadow: inset 0 1px 0 #b3b3b3, inset 0 4px 4px -2px rgba(0, 0, 0, .16), inset 0 -3px 3px -2px rgba(0, 0, 0, .1);
+      }
+      ::-webkit-scrollbar-thumb {
+        background-clip: padding-box;
+        background-image:
+          linear-gradient(90deg, rgba(255, 255, 255, 0) 8%, rgba(255, 255, 255, .7) 34%, rgba(255, 255, 255, .15) 58%, rgba(255, 255, 255, 0) 80%),
+          linear-gradient(90deg, #1d56c9 0%, #5b98ef 38%, #7db2f6 62%, #2c66d6 100%);
+        border: 2px solid transparent;
+        border-radius: 8px;
+        box-shadow: inset 0 0 0 1px rgba(12, 45, 125, .55);
+        min-height: 34px;
+      }
+      ::-webkit-scrollbar-thumb:horizontal {
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0) 8%, rgba(255, 255, 255, .7) 34%, rgba(255, 255, 255, .15) 58%, rgba(255, 255, 255, 0) 80%),
+          linear-gradient(#1d56c9 0%, #5b98ef 38%, #7db2f6 62%, #2c66d6 100%);
+        min-width: 34px;
+      }
+      html.inactive ::-webkit-scrollbar-thumb {
+        background-image: linear-gradient(90deg, #a2a2a2, #ececec 42%, #cfcfcf 62%, #9d9d9d);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .3);
+      }
+      ::-webkit-scrollbar-button { display: none; }
+      ::-webkit-scrollbar-button:vertical:end:decrement,
+      ::-webkit-scrollbar-button:vertical:end:increment,
+      ::-webkit-scrollbar-button:horizontal:end:decrement,
+      ::-webkit-scrollbar-button:horizontal:end:increment {
+        background-color: #f2f2f2;
+        background-position: center;
+        background-repeat: no-repeat;
+        box-shadow: inset 1px 0 0 #b3b3b3, inset 0 1px 0 #c8c8c8;
+        display: block;
+        height: 16px;
+        width: 15px;
+      }
+      ::-webkit-scrollbar-button:horizontal:end:decrement, ::-webkit-scrollbar-button:horizontal:end:increment { height: 15px; width: 16px; }
+      ::-webkit-scrollbar-button:vertical:end:decrement { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='7' height='5'><path d='M3.5 0 7 5H0z' fill='%23404040'/></svg>"), linear-gradient(90deg, #dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      ::-webkit-scrollbar-button:vertical:end:increment { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='7' height='5'><path d='M0 0h7L3.5 5z' fill='%23404040'/></svg>"), linear-gradient(90deg, #dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      ::-webkit-scrollbar-button:horizontal:end:decrement { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='5' height='7'><path d='M0 3.5 5 0v7z' fill='%23404040'/></svg>"), linear-gradient(#dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      ::-webkit-scrollbar-button:horizontal:end:increment { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='5' height='7'><path d='M0 0l5 3.5L0 7z' fill='%23404040'/></svg>"), linear-gradient(#dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      ::-webkit-scrollbar-button:active { filter: brightness(.8); }
+      ::-webkit-scrollbar-corner { background: #ececec; }
+
+      @supports not selector(::-webkit-scrollbar) { * { scrollbar-color: #4f8ee8 #ededed; } }
+    </style>
+</head>
+<body>
+
+<table class="page" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td class="banner" colspan="2">
+      <h1>Guestbook</h1>
+      <p>say hello &mdash; it's the polite, 2004 thing to do</p>
+    </td>
+  </tr>
+  <tr>
+    <td class="nav">
+      <div class="nav-title">Navigate</div>
+      <a class="nav-btn" href="index.html">&raquo; Home</a>
+      <a class="nav-btn" href="index.html#about">&raquo; About</a>
+      <a class="nav-btn" href="index.html#links">&raquo; Links</a>
+      <a class="nav-btn" href="guestbook.html">&raquo; Guestbook</a>
+    </td>
+    <td class="content">
+
+      <h2 class="section">Sign the Guestbook</h2>
+      <form class="gb-form" id="gbForm">
+        <table cellspacing="0" cellpadding="0">
+          <tr>
+            <td><label for="gbName">Name:</label></td>
+            <td><input type="text" id="gbName" maxlength="40" required></td>
+          </tr>
+          <tr>
+            <td valign="top"><label for="gbMsg">Message:</label></td>
+            <td><textarea id="gbMsg" maxlength="400" required></textarea></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" class="gb-submit" value="Sign the Guestb00k!"></td>
+          </tr>
+        </table>
+        <div class="gb-note">Entries are stored right here in your browser (localStorage) &mdash; nothing is sent anywhere. HTML is not allowed and will show up as plain text.</div>
+      </form>
+
+      <h2 class="section">Entries</h2>
+      <div id="gbEntries">
+        <div class="gb-entry">
+          <span class="gb-who">Some Guy</span> &mdash; <span class="gb-when">August 14, 2004</span>
+          <div class="gb-msg">Great site! Love the marquee. Is that a real hit counter?</div>
+        </div>
+        <div class="gb-entry">
+          <span class="gb-who">Anonymous Coward</span> &mdash; <span class="gb-when">May 2, 2004</span>
+          <div class="gb-msg">First! lol. Nice under construction banner :)</div>
+        </div>
+        <div class="gb-entry">
+          <span class="gb-who">websurfer_42</span> &mdash; <span class="gb-when">January 5, 2004</span>
+          <div class="gb-msg">Found you via a webring. Cool page, keep it up!</div>
+        </div>
+      </div>
+
+    </td>
+  </tr>
+  <tr>
+    <td class="footer" colspan="2">
+      &copy; 2004 Bohdan Zhuravel &middot; Last updated: Tuesday, March&nbsp;09,&nbsp;2004 &middot; <a href="index.html">back to the homepage</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+(function () {
+  var STORE_KEY = "bz2004.guestbook";
+  var form = document.getElementById("gbForm");
+  var nameEl = document.getElementById("gbName");
+  var msgEl = document.getElementById("gbMsg");
+  var list = document.getElementById("gbEntries");
+
+  // Entries live in localStorage; if that's blocked or full, they're kept for this visit instead
+  var memEntries = null;
+
+  function loadEntries() {
+    if (memEntries) return memEntries.slice();
+    try {
+      var raw = window.localStorage.getItem(STORE_KEY);
+      var arr = raw ? JSON.parse(raw) : [];
+      return Object.prototype.toString.call(arr) === "[object Array]" ? arr : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveEntries(arr) {
+    try { window.localStorage.setItem(STORE_KEY, JSON.stringify(arr)); return true; }
+    catch (e) { memEntries = arr.slice(); return false; } // e.g. private browsing or a sandboxed file:// frame
+  }
+
+  function renderEntry(entry) {
+    // Built with DOM text nodes (never innerHTML) so submitted text can never be
+    // interpreted as markup -- "<b>x</b>" shows up as the literal characters.
+    var wrap = document.createElement("div");
+    wrap.className = "gb-entry gb-entry-user";
+
+    var who = document.createElement("span");
+    who.className = "gb-who";
+    who.appendChild(document.createTextNode(entry.name));
+
+    var dash = document.createTextNode(" — ");
+
+    var when = document.createElement("span");
+    when.className = "gb-when";
+    when.appendChild(document.createTextNode(entry.when));
+
+    var msg = document.createElement("div");
+    msg.className = "gb-msg";
+    msg.appendChild(document.createTextNode(entry.message));
+
+    wrap.appendChild(who);
+    wrap.appendChild(dash);
+    wrap.appendChild(when);
+    wrap.appendChild(msg);
+    return wrap;
+  }
+
+  function renderAll() {
+    var stored = loadEntries();
+    var nodes = list.querySelectorAll(".gb-entry-user");
+    for (var i = 0; i < nodes.length; i++) nodes[i].parentNode.removeChild(nodes[i]);
+    for (var j = stored.length - 1; j >= 0; j--) {
+      list.insertBefore(renderEntry(stored[j]), list.firstChild);
+    }
+  }
+
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = (nameEl.value || "").trim();
+      var message = (msgEl.value || "").trim();
+      if (!name || !message) return;
+      var entries = loadEntries();
+      var when = new Intl.DateTimeFormat(undefined, { month: "long", day: "numeric", year: "numeric" }).format(new Date());
+      entries.push({ name: name, message: message, when: when });
+      saveEntries(entries);
+      nameEl.value = "";
+      msgEl.value = "";
+      renderAll();
+    });
+  }
+
+  renderAll();
+})();
+</script>
+
+  <script src="../js/safari-bridge.js"></script>
+</body>
+</html>

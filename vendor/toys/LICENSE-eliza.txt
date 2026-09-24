@@ -1,0 +1,48 @@
+elizajs.js and eliza-script.js in this directory are vendored from:
+
+  https://github.com/urbanautomaton/eliza-js
+  commit a2e64737137398c138b3a26b0f96078ae835f49b (master, 2014-01-06), fetched 2026-09-23
+
+(Landsteiner's older "elizabot.js" was considered first, but its own page only
+says the code is "free software and provided 'as is'" with no explicit
+permission grant, and its npm package lists no SPDX license -- ambiguous, so
+a different, clearly-licensed implementation was used instead, per the "stop
+and report if a license is unclear; pick another" instruction.)
+
+The MIT License (MIT)
+Copyright (c) 2013 Simon Coffey
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+elizajs.js bundles the upstream lib/eliza/{decomp,key,linked_list,
+ordered_hash,responder,eliza}.js files verbatim into one browser-loadable
+file behind a tiny local CommonJS-style shim (no bundler, no network access);
+no logic was changed. eliza-script.js is the upstream lib/eliza/script.js
+data file (Coffey's JSON-style translation of Weizenbaum's original 1966
+DOCTOR script), reproduced verbatim except that its last line
+("module.exports = script;", referring to an undefined variable -- the
+object is actually named eliza_script) was replaced with a working
+UMD-ish export, since that line would throw if it were ever actually
+required upstream. See the header comments in each file for details.
+
+The underlying ELIZA/DOCTOR concept and dialogue style originate with
+Joseph Weizenbaum's 1966 program and are in the public domain; only this
+particular JS implementation and script encoding are Simon Coffey's
+copyrighted, MIT-licensed work.

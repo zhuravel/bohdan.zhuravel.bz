@@ -1,0 +1,6 @@
+.DS_Store
+._*
+*.swp
+
+# the global "Icon?" rule (for macOS Icon\r files) matches this folder too, case-insensitively
+!img/icons/

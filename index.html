@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Bohdan Zhuravel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Bohdan Zhuravel — Software Engineer at Talkable" />
+    <!-- link previews (Slack, iMessage, LinkedIn…) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bohdan.zhuravel.bz/" />
+    <meta property="og:title" content="Bohdan Zhuravel" />
+    <meta property="og:description" content="Software Engineer at Talkable. This homepage is a Mac OS X Panther desktop: poke around." />
+    <meta property="og:image" content="https://bohdan.zhuravel.bz/img/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A Mac OS X Panther desktop with an About Bohdan window and a Terminal" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="canonical" href="https://bohdan.zhuravel.bz/" />
+    <link rel="me" href="https://ruby.social/@bohdan" />
+    <link rel="preload" as="image" href="img/tiger-1440.webp" imagesrcset="img/tiger-1440.webp 1440w, img/tiger-2560.webp 2560w" imagesizes="100vw" />
+    <style>
+      /* Mac OS X 10.3 Panther */
+      :root {
+        --ui: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+        --mono: Monaco, Menlo, "Courier New", monospace;
+        --select: linear-gradient(#5f9cf5, #2a67e0);
+        --stripes: repeating-linear-gradient(#f5f5f5 0, #f5f5f5 1px, #eaeaea 1px, #eaeaea 2px);
+        color-scheme: light;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html, body { height: 100%; }
+
+      body {
+        background: #2d5ca6;
+        color: #000;
+        font: 13px/1.35 var(--ui);
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Everything on screen lives in #machine, so Shut Down can collapse it like a CRT */
+      #machine {
+        background: #2d5ca6 url("img/tiger-1440.jpg") 60% center / cover no-repeat;
+        background-image: image-set(url("img/tiger-1440.webp") type("image/webp") 1x, url("img/tiger-2560.webp") type("image/webp") 2x);
+        background-position: 60% center;
+        background-size: cover;
+        inset: 0;
+        overflow: hidden;
+        position: fixed;
+      }
+
+      a { color: inherit; text-decoration: none; }
+      button { background: none; border: 0; color: inherit; font: inherit; }
+
+      /* A desktop isn't a document: no text selection or image dragging in the chrome.
+         Terminal output, viewer text and text fields stay selectable. */
+      #machine { user-select: none; -webkit-user-select: none; }
+      #machine .screen .line, #machine .f-viewer-text, #machine input { user-select: text; -webkit-user-select: text; }
+      #machine img, #machine a, #machine svg { -webkit-user-drag: none; }
+
+      /* ── Menu bar ───────────────────────────── */
+      .menubar {
+        background: repeating-linear-gradient(#fdfdfd 0, #fdfdfd 1px, #f2f2f2 1px, #f2f2f2 2px);
+        box-shadow: 0 1px 0 #8f8f8f, 0 2px 5px rgba(0, 0, 0, .18);
+        display: flex;
+        font-size: 14px;
+        height: 22px;
+        left: 0;
+        padding: 0 6px;
+        position: fixed;
+        right: 0;
+        top: env(safe-area-inset-top, 0px);
+        z-index: 1000;
+      }
+
+      .menu { position: relative; }
+
+      .menu > button { cursor: default; height: 22px; line-height: 22px; padding: 0 9px; }
+      .menu.logo > button { padding: 0 12px; }
+      .menu.logo svg { display: block; height: 17px; margin-top: 2px; width: 15px; }
+      .menu.app > button { font-weight: bold; }
+      .menu.open > button { background: var(--select); color: #fff; }
+
+      .dropdown {
+        background: rgba(255, 255, 255, .96);
+        border-radius: 0 0 5px 5px;
+        box-shadow: 0 5px 16px rgba(0, 0, 0, .35), 0 0 0 1px rgba(0, 0, 0, .18);
+        display: none;
+        left: 0;
+        min-width: 210px;
+        padding: 4px 0;
+        position: absolute;
+        top: 22px;
+      }
+
+      .menu.open .dropdown { display: block; }
+
+      .dropdown a, .dropdown button {
+        cursor: default;
+        display: flex;
+        justify-content: space-between;
+        padding: 1px 22px;
+        text-align: left;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+      .dropdown span { color: #6e6e6e; margin-left: 2.5em; }
+
+      .dropdown a:hover, .dropdown button:hover, .dropdown a:focus-visible, .dropdown button:focus-visible {
+        background: var(--select);
+        color: #fff;
+        outline: none;
+      }
+
+      .dropdown a:hover span, .dropdown button:hover span { color: #fff; }
+      .dropdown hr { border: 0; border-top: 1px solid #dcdcdc; margin: 5px 0; }
+      .dropdown [hidden] { display: none; }
+      .dropdown button:disabled, .dropdown button:disabled:hover { background: none; color: #a8a8a8; }
+
+      .status { align-items: stretch; display: flex; margin-left: auto; }
+      .status > * { align-items: center; display: flex; padding: 0 8px; }
+      .status button { cursor: default; }
+      .status button:hover { background: rgba(0, 0, 0, .06); }
+      .status svg { display: block; fill: #1a1a1a; height: 16px; width: 18px; }
+      .status .off { opacity: .35; }
+
+      /* ── Desktop icons ──────────────────────── */
+      .icons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: fixed;
+        right: 12px;
+        top: calc(env(safe-area-inset-top, 0px) + 36px);
+      }
+
+      .desk-icon {
+        align-items: center;
+        cursor: default;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        width: 100px;
+      }
+
+      .desk-icon .glyph {
+        align-items: center;
+        border-radius: 6px;
+        display: flex;
+        height: 72px;
+        justify-content: center;
+        width: 72px;
+      }
+
+      .desk-icon .glyph img, .desk-icon .glyph svg { display: block; height: 64px; width: 64px; }
+
+      .desk-icon > span:last-child {
+        border-radius: 3px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 1.25;
+        padding: 0 5px;
+        text-align: center;
+        text-shadow: 1px 1px 2px #000, 0 0 1px #000;
+      }
+
+      .desk-icon.selected .glyph { background: rgba(0, 0, 0, .3); }
+      .desk-icon.selected > span:last-child { background: #2a5bd2; text-shadow: none; }
+
+      /* ── Windows (Aqua) ─────────────────────── */
+      .window {
+        --dx: 0px;
+        --dy: 0px;
+        --s: 1;
+        border-radius: 6px 6px 0 0;
+        box-shadow: 0 8px 26px rgba(0, 0, 0, .38), 0 0 0 1px rgba(0, 0, 0, .3);
+        left: var(--x);
+        overflow: hidden;
+        position: fixed;
+        top: var(--y);
+        transform: translate(calc(var(--dx) + var(--ex, 0px)), calc(var(--dy) + var(--ey, 0px))) scale(calc(var(--s) * var(--es, 1)));
+        transition: opacity .2s ease, transform .2s ease, box-shadow .2s ease;
+      }
+
+      /* Exposé (F9 all windows, F10 application windows, F11 desktop) */
+      .exposing .window { transition: transform .32s ease, opacity .25s ease, box-shadow .15s ease; }
+      .expose-dim { background: rgba(0, 0, 0, .38); inset: 0; opacity: 0; pointer-events: none; position: fixed; transition: opacity .3s ease; z-index: 5; }
+      .exposing:not(.expose-desktop) .expose-dim { opacity: 1; }
+      .window.expose-dimmed { opacity: .18; }
+      .exposing .window.expose-hover, .exposing .window.active.expose-hover { box-shadow: 0 0 0 3px rgba(92, 148, 255, .95), 0 14px 44px rgba(0, 0, 0, .58); }
+      .expose-label {
+        background: rgba(18, 18, 18, .78);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 3px 13px 4px;
+        pointer-events: none;
+        position: fixed;
+        text-shadow: 0 1px 1px #000;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+        z-index: 950;
+      }
+      .expose-label[hidden] { display: none; }
+
+      .window.active { box-shadow: 0 14px 44px rgba(0, 0, 0, .58), 0 0 0 1px rgba(0, 0, 0, .42); }
+      .window.dragging { transition: none; }
+      .window.closed { --s: .92; opacity: 0; pointer-events: none; }
+      .window.minimized { pointer-events: none; transition: none; visibility: hidden; }
+
+      /* Genie: the window is sliced into strips that are warped into the Dock */
+      .genie { inset: 0; pointer-events: none; position: fixed; z-index: 800; }
+      .genie .window { box-shadow: none; }
+
+      #about { --x: calc(50% - 494px); --y: calc(50% - 196px); background: var(--stripes); width: 340px; }
+      #term { --x: calc(50% - 116px); --y: calc(50% - 222px); background: #fff; }
+      #finder { --x: calc(50% - 330px); --y: calc(50% - 262px); width: var(--fw, 660px); }
+      #safari { --x: calc(50% - 400px); --y: calc(50% - 300px); width: var(--sw, 800px); }
+      .dock-item[hidden] { display: none; }
+
+      .titlebar {
+        background: repeating-linear-gradient(rgba(255, 255, 255, .5) 0, rgba(255, 255, 255, .5) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 2px), linear-gradient(#f1f1f1, #d0d0d0);
+        border-bottom: 1px solid #979797;
+        cursor: default;
+        height: 22px;
+        position: relative;
+        touch-action: none;
+      }
+
+      .window:not(.active) .titlebar {
+        background: repeating-linear-gradient(rgba(255, 255, 255, .55) 0, rgba(255, 255, 255, .55) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 2px), linear-gradient(#f8f8f8, #e7e7e7);
+        border-bottom-color: #c4c4c4;
+      }
+
+      /* The title lives between the traffic lights and the right edge, centred on the window: it truncates
+         as a window narrows (and vanishes when there's no room), and never makes a window wider */
+      .titlebar h2 {
+        color: #000;
+        font-size: 13px;
+        font-weight: normal;
+        left: 72px;
+        line-height: 22px;
+        overflow: hidden;
+        position: absolute;
+        right: 72px;
+        text-align: center;
+        top: 0;
+        text-overflow: ellipsis;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, .6);
+        white-space: nowrap;
+      }
+
+      .window:not(.active) .titlebar h2 { color: #8e8e8e; }
+
+      /* Brushed metal (Finder), Panther's second window look */
+      .window.metal {
+        background-color: #c6c6c6;
+        background-image:
+          radial-gradient(ellipse 70% 38% at 50% 0%, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 70%),
+          url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><filter id='b'><feTurbulence type='fractalNoise' baseFrequency='.003 .9' numOctaves='2' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .5 0 0 0 -.2'/></filter><rect width='100%' height='100%' filter='url(%23b)'/></svg>"),
+          url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><filter id='d'><feTurbulence type='fractalNoise' baseFrequency='.004 .7' numOctaves='2' seed='5' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .45 0 0 0 -.22'/></filter><rect width='100%' height='100%' filter='url(%23d)'/></svg>"),
+          linear-gradient(#dcdcdc, #c4c4c4 45%, #b9b9b9);
+        border-radius: 6px;
+      }
+
+      .window.metal .titlebar, .window.metal:not(.active) .titlebar { background: none; border-bottom: 0; }
+      .window.metal:not(.active) { filter: saturate(.85) brightness(1.04); }
+
+      .lights { display: flex; gap: 7px; left: 8px; position: absolute; top: 4px; }
+
+      .light {
+        background: radial-gradient(circle at 50% 115%, #fbfbfb 0%, #d9d9d9 42%, #a3a3a3 100%);
+        border-radius: 50%;
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .4), inset 0 -2px 3px rgba(255, 255, 255, .55), 0 1px 1px rgba(0, 0, 0, .18);
+        cursor: default;
+        height: 14px;
+        position: relative;
+        width: 14px;
+      }
+
+      .light::before {
+        background: linear-gradient(rgba(255, 255, 255, .95), rgba(255, 255, 255, .2));
+        border-radius: 7px 7px 4px 4px;
+        content: "";
+        height: 6px;
+        left: 3px;
+        position: absolute;
+        right: 3px;
+        top: 1px;
+      }
+
+      .light::after {
+        color: rgba(60, 0, 0, .75);
+        content: "";
+        font: bold 10px/14px "Lucida Grande", Geneva, sans-serif;
+        inset: 0;
+        position: absolute;
+        text-align: center;
+      }
+
+      .active .light, .lights:hover .light { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .5), inset 0 -2px 3px rgba(255, 255, 255, .45), 0 1px 1px rgba(0, 0, 0, .25); }
+      .active .close, .lights:hover .close { background: radial-gradient(circle at 50% 115%, #ffcabd 0%, #ff6b5b 36%, #d42c20 74%, #a3160d 100%); }
+      .active .min, .lights:hover .min { background: radial-gradient(circle at 50% 115%, #fff4bd 0%, #ffc43e 36%, #df8e0a 74%, #b06803 100%); }
+      .active .zoom, .lights:hover .zoom { background: radial-gradient(circle at 50% 115%, #dbffc5 0%, #72d64b 36%, #2f9b19 74%, #1d760b 100%); }
+
+      .light.disabled, .active .light.disabled, .lights:hover .light.disabled,
+      .light:disabled, .active .light:disabled, .lights:hover .light:disabled {
+        background: radial-gradient(circle at 50% 115%, #fbfbfb 0%, #d9d9d9 42%, #a3a3a3 100%);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .28), inset 0 -2px 3px rgba(255, 255, 255, .55);
+        opacity: .7;
+      }
+
+      .lights:hover .close::after { content: "×"; font-size: 13px; line-height: 13px; }
+      .lights:hover .min::after { color: rgba(90, 50, 0, .75); content: "–"; line-height: 13px; }
+      .lights:hover .zoom::after { color: rgba(0, 60, 0, .75); content: "+"; line-height: 14px; }
+      .lights:hover .light.disabled::after, .lights:hover .light:disabled::after { content: ""; }
+
+      /* Windows the Finder creates itself (alert, viewers) get Panther surfaces here,
+         and its pop-ups sit just under the CRT overlay (2000) so they get scanlines too */
+      body .f-alert { background: var(--stripes); border-radius: 6px 6px 0 0; z-index: 1961; }
+      body .f-alert-blocker { z-index: 1960; }
+      body .f-viewer { background: #fff; }
+      body .f-menu { z-index: 1500; }
+      body .f-ghost { z-index: 1990; }
+
+      /* Finder zoom: taller content area; phones keep their own height */
+      #finder .f-body { transition: height .2s ease; }
+      #finder.zoomed .f-body { height: calc(100vh - 22px - 96px - 150px); }
+      #safari .s-content { transition: height .2s ease; }
+      #safari.zoomed .s-content { height: calc(100vh - 22px - 96px - 170px); }
+
+      /* Aqua push buttons: gel pills; the default one pulses */
+      .btn {
+        background: linear-gradient(#ffffff 0%, #f4f4f4 40%, #dcdcdc 50%, #ececec 78%, #ffffff 100%);
+        border: 1px solid #808080;
+        border-radius: 11px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .22), inset 0 1px 0 #fff;
+        cursor: default;
+        display: block;
+        font-size: 13px;
+        height: 21px;
+        line-height: 19px;
+        padding: 0 16px;
+        text-align: center;
+        text-shadow: none;
+      }
+
+      .btn:active {
+        background: linear-gradient(#bcd3f5 0%, #8db3ea 42%, #5f91dd 50%, #82b0ee 78%, #c1dcff 100%);
+        border-color: #3b5d96;
+      }
+
+      .active .btn.default, .f-alert .btn.default {
+        animation: aquapulse 1.8s ease-in-out infinite alternate;
+        background: linear-gradient(#d9ecff 0%, #95c6fb 40%, #5a9df3 50%, #78b5f8 78%, #c7e3ff 100%);
+        border-color: #2e5dac;
+      }
+
+      @keyframes aquapulse { to { filter: brightness(1.13) saturate(1.2); } }
+
+      .btn:focus-visible { box-shadow: 0 0 0 3px rgba(80, 140, 235, .7); outline: none; }
+
+      /* ── About window ───────────────────────── */
+      .about {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        padding: 22px 26px 16px;
+        text-align: center;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+      }
+
+      .avatar {
+        border-radius: 50%;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, .35), 0 0 0 1px rgba(0, 0, 0, .15);
+        display: block;
+        height: 118px;
+        width: 118px;
+      }
+
+      .about h1 {
+        color: #262626;
+        font-size: 24px;
+        font-weight: normal;
+        letter-spacing: -.01em;
+        line-height: 1.1;
+        margin-top: 16px;
+      }
+
+      .version { color: #595959; font-size: 11px; margin-top: 4px; }
+
+      .about dl {
+        display: grid;
+        font-size: 11px;
+        gap: 3px 10px;
+        grid-template-columns: 1fr 1.2fr;
+        margin: 18px 0 16px;
+        width: 100%;
+      }
+
+      .about dt { font-weight: bold; text-align: right; }
+      .about dd { text-align: left; }
+      .about dd a { color: #1c4fc4; }
+      .about dd a:hover { text-decoration: underline; }
+      .about dd a:focus-visible { border-radius: 3px; box-shadow: 0 0 0 3px rgba(80, 140, 235, .7); outline: none; }
+
+      .buttons { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; width: 100%; }
+
+      .legal { color: #707070; font-size: 10px; line-height: 1.4; margin-top: 18px; }
+
+      /* ── Terminal window ────────────────────── */
+      /* Exactly --cols Monaco cells wide and --rows lines tall, so the "80x24" title is true */
+      .screen {
+        --cols: 80;
+        --rows: 24;
+        color: #000;
+        cursor: text;
+        font: 12px/15px var(--mono);
+        height: calc(var(--rows) * 15px + 4px);
+        overflow-y: scroll;
+        padding: 2px 4px;
+        transition: height .2s ease;
+        width: calc(var(--cols) * 1ch + 8px + 15px);
+      }
+      /* Grow boxes: the ridged corner that resizes a window. Terminal and text windows keep it in a
+         15px strip under the scroll bar; in other windows it sits right in the bottom-right corner. */
+      .grow { background: #fff; height: 15px; }
+      .grow-box {
+        background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15'><path d='M14 4 4 14M14 8 8 14M14 12 12 14' stroke='%23fff'/><path d='M13 3 3 13M13 7 7 13M13 11 11 13' stroke='%23858585'/></svg>");
+        display: block;
+        height: 15px;
+        touch-action: none;
+        width: 15px;
+      }
+      .grow .grow-box { margin-left: auto; }
+      .window > .grow-box { bottom: 0; position: absolute; right: 0; }
+      .window.resizing .screen, .window.resizing .f-body, .window.resizing .s-content { transition: none; }
+
+      .screen ::selection { background: #b5d5ff; }
+      .line { min-height: 15px; white-space: pre-wrap; word-break: break-word; }
+      .line[hidden] { display: none; }
+
+      .screen a { border-bottom: 1px dotted #999; }
+      .screen a:hover { background: #000; border-color: #000; color: #fff; }
+
+      .ls { column-gap: 4ch; display: flex; flex-wrap: wrap; }
+      .dim { color: #8a8a8a; }
+      .screen .rev { background: #000; color: #fff; }
+
+      .portrait {
+        display: block;
+        height: 200px;
+        image-rendering: pixelated;
+        margin: 4px 0 6px;
+        width: 200px;
+      }
+
+      .cursor { box-shadow: inset 0 0 0 1px #8a8a8a; }
+      .active .cursor { background: #7f7f7f; box-shadow: none; color: #fff; }
+
+      #term.drop-hover .screen { box-shadow: inset 0 0 0 3px rgba(56, 117, 215, .65); }
+
+      /* Aqua scrollers everywhere: pinstriped groove, blue gel thumb, both arrows together at the bottom */
+      #machine ::-webkit-scrollbar { height: 15px; width: 15px; }
+      #machine ::-webkit-scrollbar-track {
+        background: repeating-linear-gradient(#ececec 0, #ececec 1px, #f7f7f7 1px, #f7f7f7 2px);
+        box-shadow: inset 1px 0 0 #b3b3b3, inset 4px 0 4px -2px rgba(0, 0, 0, .16), inset -3px 0 3px -2px rgba(0, 0, 0, .1);
+      }
+      #machine ::-webkit-scrollbar-track:horizontal {
+        background: repeating-linear-gradient(90deg, #ececec 0, #ececec 1px, #f7f7f7 1px, #f7f7f7 2px);
+        box-shadow: inset 0 1px 0 #b3b3b3, inset 0 4px 4px -2px rgba(0, 0, 0, .16), inset 0 -3px 3px -2px rgba(0, 0, 0, .1);
+      }
+      #machine ::-webkit-scrollbar-thumb {
+        background-clip: padding-box;
+        background-image:
+          linear-gradient(90deg, rgba(255, 255, 255, 0) 8%, rgba(255, 255, 255, .7) 34%, rgba(255, 255, 255, .15) 58%, rgba(255, 255, 255, 0) 80%),
+          linear-gradient(90deg, #1d56c9 0%, #5b98ef 38%, #7db2f6 62%, #2c66d6 100%);
+        border: 2px solid transparent;
+        border-radius: 8px;
+        box-shadow: inset 0 0 0 1px rgba(12, 45, 125, .55);
+        min-height: 34px;
+      }
+      #machine ::-webkit-scrollbar-thumb:horizontal {
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0) 8%, rgba(255, 255, 255, .7) 34%, rgba(255, 255, 255, .15) 58%, rgba(255, 255, 255, 0) 80%),
+          linear-gradient(#1d56c9 0%, #5b98ef 38%, #7db2f6 62%, #2c66d6 100%);
+        min-width: 34px;
+      }
+      #machine .window:not(.active) ::-webkit-scrollbar-thumb {
+        background-image: linear-gradient(90deg, #a2a2a2, #ececec 42%, #cfcfcf 62%, #9d9d9d);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .3);
+      }
+      #machine ::-webkit-scrollbar-button { display: none; }
+      #machine ::-webkit-scrollbar-button:vertical:end:decrement,
+      #machine ::-webkit-scrollbar-button:vertical:end:increment,
+      #machine ::-webkit-scrollbar-button:horizontal:end:decrement,
+      #machine ::-webkit-scrollbar-button:horizontal:end:increment {
+        background-color: #f2f2f2;
+        background-position: center;
+        background-repeat: no-repeat;
+        box-shadow: inset 1px 0 0 #b3b3b3, inset 0 1px 0 #c8c8c8;
+        display: block;
+        height: 16px;
+        width: 15px;
+      }
+      #machine ::-webkit-scrollbar-button:horizontal:end:decrement, #machine ::-webkit-scrollbar-button:horizontal:end:increment { height: 15px; width: 16px; }
+      #machine ::-webkit-scrollbar-button:vertical:end:decrement { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='7' height='5'><path d='M3.5 0 7 5H0z' fill='%23404040'/></svg>"), linear-gradient(90deg, #dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      #machine ::-webkit-scrollbar-button:vertical:end:increment { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='7' height='5'><path d='M0 0h7L3.5 5z' fill='%23404040'/></svg>"), linear-gradient(90deg, #dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      #machine ::-webkit-scrollbar-button:horizontal:end:decrement { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='5' height='7'><path d='M0 3.5 5 0v7z' fill='%23404040'/></svg>"), linear-gradient(#dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      #machine ::-webkit-scrollbar-button:horizontal:end:increment { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='5' height='7'><path d='M0 0l5 3.5L0 7z' fill='%23404040'/></svg>"), linear-gradient(#dcdcdc, #fbfbfb 45%, #e3e3e3); }
+      #machine ::-webkit-scrollbar-button:active { filter: brightness(.8); }
+      #machine ::-webkit-scrollbar-corner { background: #ececec; }
+
+      /* Firefox can't style scroller parts; give it Aqua colours at least */
+      @supports not selector(::-webkit-scrollbar) {
+        #machine * { scrollbar-color: #4f8ee8 #ededed; }
+      }
+
+      #input { height: 1px; left: -100px; opacity: 0; position: fixed; top: 0; width: 1px; }
+
+      /* ── Dock (Panther: striped translucent plate, black triangles) ── */
+      .dock {
+        align-items: flex-end;
+        background:
+          repeating-linear-gradient(rgba(255, 255, 255, .3) 0, rgba(255, 255, 255, .3) 1px, rgba(255, 255, 255, .1) 1px, rgba(255, 255, 255, .1) 2px),
+          rgba(255, 255, 255, .16);
+        border: 1px solid rgba(255, 255, 255, .6);
+        border-bottom: 0;
+        border-radius: 9px 9px 0 0;
+        bottom: env(safe-area-inset-bottom, 0px);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, .15), inset 0 1px 0 rgba(255, 255, 255, .45);
+        display: flex;
+        gap: 6px;
+        left: 50%;
+        padding: 4px 10px 10px;
+        position: fixed;
+        transform: translateX(-50%);
+        z-index: 900;
+      }
+
+      .dock-item { cursor: default; display: block; height: 52px; position: relative; width: 52px; }
+      .dock-item > :first-child { display: block; height: 52px; width: 52px; }
+      .dock-item:active > :first-child, .dock-item.drop-hover > :first-child { filter: brightness(.55); }
+      .trash-icon img { display: block; height: 100%; width: 100%; }
+      .dock-item:not(.full) .t-full, .dock-item.full .t-empty { display: none; }
+
+      .dock-item .label {
+        bottom: calc(100% + 10px);
+        color: #000;
+        font-size: 14px;
+        font-weight: bold;
+        left: 50%;
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        text-shadow: 0 0 2px #fff, 0 0 3px #fff, 0 0 5px #fff;
+        transform: translateX(-50%);
+        transition: opacity .1s;
+        white-space: nowrap;
+      }
+
+      .dock-item:hover .label { opacity: 1; }
+
+      .dock-item.running::after {
+        border-bottom: 5px solid #000;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        bottom: -9px;
+        content: "";
+        left: 50%;
+        margin-left: -4px;
+        position: absolute;
+      }
+
+      .dock-sep {
+        align-self: stretch;
+        border-left: 1px solid rgba(0, 0, 0, .28);
+        border-right: 1px solid rgba(255, 255, 255, .55);
+        margin: 4px 3px -6px;
+      }
+
+      /* Minimized windows live right of the separator as live thumbnails */
+      .dock-min .thumb { display: block; height: 52px; overflow: hidden; position: relative; width: 52px; }
+      /* the tile is a <button>, so undo its centred text for the window inside */
+      .dock-min .thumb > .window { box-shadow: 0 1px 3px rgba(0, 0, 0, .5); left: 0; pointer-events: none; position: absolute; text-align: left; transform-origin: 0 0; transition: none; }
+      .dock-min .badge { bottom: -3px; height: 20px; position: absolute; right: -3px; width: 20px; }
+      .dock-min .badge img, .dock-min .badge svg { display: block; height: 20px; width: 20px; }
+
+      .dock-item.bounce > :first-child { animation: bounce .9s ease-in-out; }
+
+      @keyframes bounce {
+        0%, 50%, 86%, 100% { transform: translateY(0); }
+        25% { transform: translateY(-24px); }
+        68% { transform: translateY(-10px); }
+      }
+
+      /* ── Startup: grey screen, grey Apple, spinning gear ── */
+      .boot {
+        align-items: center;
+        background: radial-gradient(ellipse at 50% 45%, #e6e6e6, #cdcdcd 75%);
+        display: flex;
+        flex-direction: column;
+        gap: 70px;
+        inset: 0;
+        justify-content: center;
+        position: fixed;
+        transition: opacity .5s ease;
+        z-index: 1800;
+      }
+      .boot[hidden] { display: none; }
+      .boot.fade { opacity: 0; }
+      .boot-apple { display: block; height: 118px; margin-top: 40px; width: 118px; }
+      .gear { animation: gear 1s steps(12) infinite; height: 30px; position: relative; width: 30px; }
+      .gear i {
+        background: #4f4f4f;
+        border-radius: 2px;
+        height: 9px;
+        left: 13.5px;
+        position: absolute;
+        top: 0;
+        transform-origin: 1.5px 15px;
+        width: 3px;
+      }
+      @keyframes gear { to { transform: rotate(360deg); } }
+
+      /* ── Sleep / Shut Down ──────────────────── */
+      .power { background: #000; cursor: default; inset: 0; position: fixed; z-index: 1900; }
+      .power[hidden] { display: none; }
+      .power .led {
+        animation: breathe 5s ease-in-out infinite;
+        background: #fff;
+        border-radius: 50%;
+        bottom: 26px;
+        box-shadow: 0 0 8px 2px rgba(255, 255, 255, .6);
+        height: 6px;
+        left: 50%;
+        margin-left: -3px;
+        position: absolute;
+        width: 6px;
+      }
+      .power:not(.sleeping) .led { display: none; }
+      @keyframes breathe { 0%, 100% { opacity: .05; } 45% { opacity: .9; } }
+
+      #machine.crt-off { animation: crtoff .5s ease-in forwards; }
+      #machine.crt-on { animation: crtoff .5s ease-out reverse; }
+
+      @keyframes crtoff {
+        0% { filter: brightness(1); transform: scale(1, 1); }
+        55% { filter: brightness(3); transform: scale(1, .004); }
+        100% { filter: brightness(6); transform: scale(0, .004); }
+      }
+
+      /* ── Narrow screens: stack windows ─────── */
+      @media (max-width: 1040px), (max-height: 560px) {
+        body { overflow: auto; }
+        #machine { background-attachment: fixed; min-height: 100%; overflow: visible; position: relative; }
+        .desktop {
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+          margin: 0 auto;
+          max-width: 660px;
+          padding: calc(env(safe-area-inset-top, 0px) + 40px) 16px calc(env(safe-area-inset-bottom, 0px) + 100px);
+        }
+        .window, #about, #term, #finder, #safari { left: auto; position: relative; top: auto; transform: none; width: 100%; }
+        .window.closed, .window.minimized { display: none; }
+        .icons { display: none; }
+        .screen { height: 300px; width: auto; }
+        .grow, .grow-box { display: none; }
+      }
+
+      @media (max-width: 520px) {
+        .menubar { font-size: 13px; padding: 0 2px; }
+        .menu > button { padding: 0 7px; }
+        .status .wide { display: none; }
+        .screen { font-size: 11px; line-height: 14px; }
+        .portrait { height: 170px; width: 170px; }
+        .buttons { grid-template-columns: 1fr; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .active .btn.default, .dock-item.bounce > :first-child, .power .led, .gear { animation: none; }
+        .window, #finder .f-body, #safari .s-content, .screen { transition: none; }
+        #machine.crt-off, #machine.crt-on { animation-duration: .01s; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Symbols reused across the page (kept out of display:none so gradients render) -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <clipPath id="apple-shape">
+          <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
+        </clipPath>
+        <linearGradient id="boot-grey" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a9a9a" /><stop offset="1" stop-color="#5d5d5d" /></linearGradient>
+      </defs>
+      <!-- the six-colour Apple of 1977–1998 -->
+      <symbol id="s-apple" viewBox="0 0 24 24">
+        <g clip-path="url(#apple-shape)">
+          <rect width="24" height="9.1" fill="#61bb46" />
+          <rect y="9" width="24" height="3.1" fill="#fdb827" />
+          <rect y="12" width="24" height="3.1" fill="#f5821f" />
+          <rect y="15" width="24" height="3.1" fill="#e03a3e" />
+          <rect y="18" width="24" height="3.1" fill="#963d97" />
+          <rect y="21" width="24" height="3" fill="#009ddc" />
+        </g>
+      </symbol>
+    </svg>
+
+    <div id="machine">
+      <header class="menubar">
+        <div class="menu logo">
+          <button type="button" aria-label="Apple menu"><svg aria-hidden="true"><use href="#s-apple" /></svg></button>
+          <div class="dropdown">
+            <button type="button" data-open="about">About Bohdan</button>
+            <hr />
+            <button type="button" data-power="sleep">Sleep</button>
+            <button type="button" data-power="restart">Restart…</button>
+            <button type="button" data-power="off">Shut Down…</button>
+            <hr />
+            <button type="button" data-power="logout">Log Out bohdan…</button>
+          </div>
+        </div>
+        <div class="menu app">
+          <button type="button" id="appName">Terminal</button>
+          <div class="dropdown">
+            <button type="button" data-for="finder" data-empty-trash>Empty Trash…</button>
+            <button type="button" data-for="term" data-clear>Clear Scrollback<span>⌘K</span></button>
+            <hr />
+            <button type="button" data-close-active>Close Window</button>
+            <hr data-quit-sep />
+            <button type="button" data-quit>Quit Terminal</button>
+          </div>
+        </div>
+        <div class="menu">
+          <button type="button">Links</button>
+          <div class="dropdown">
+            <a href="https://github.com/zhuravel" target="_blank" rel="me">GitHub</a>
+            <a href="https://www.linkedin.com/in/bohdanzhuravel/" target="_blank">LinkedIn</a>
+            <hr />
+            <a class="js-email" href="#" data-reveal="keep">Email…</a>
+          </div>
+        </div>
+        <div class="menu">
+          <button type="button">Window</button>
+          <div class="dropdown">
+            <button type="button" data-open="finder">Finder</button>
+            <button type="button" data-open="about">About Bohdan</button>
+            <button type="button" data-open="term">Terminal</button>
+            <button type="button" data-open="safari" hidden>Safari</button>
+            <hr />
+            <button type="button" data-expose="all">Exposé: All Windows<span>F9</span></button>
+            <button type="button" data-expose="app">Exposé: Application Windows<span>F10</span></button>
+            <button type="button" data-expose="desktop">Exposé: Desktop<span>F11</span></button>
+          </div>
+        </div>
+        <div class="status">
+          <button type="button" class="wide" id="soundToggle" aria-label="Sound">
+            <svg viewBox="0 0 18 16" aria-hidden="true"><path d="M2 5.5h3L9 2v12L5 10.5H2z" /><path class="waves" d="M11.2 5.2a4 4 0 0 1 0 5.6l.9.9a5.3 5.3 0 0 0 0-7.4zM13.3 3.1a7 7 0 0 1 0 9.8l.9.9a8.3 8.3 0 0 0 0-11.6z" /></svg>
+          </button>
+          <button type="button" class="wide" id="crtToggle" aria-label="CRT display">
+            <svg viewBox="0 0 18 16" aria-hidden="true"><path d="M2.5 2h13A1.5 1.5 0 0 1 17 3.5v8A1.5 1.5 0 0 1 15.5 13h-13A1.5 1.5 0 0 1 1 11.5v-8A1.5 1.5 0 0 1 2.5 2Zm.5 2v7h12V4Zm3 10h6v1.2H6Z" /></svg>
+          </button>
+          <span id="clock">—</span>
+        </div>
+      </header>
+
+      <div class="icons">
+        <button type="button" class="desk-icon" data-icon="hd" aria-label="Open Macintosh HD">
+          <span class="glyph"><img src="img/icons/hd.png" width="64" height="64" alt="" /></span>
+          <span>Macintosh HD</span>
+        </button>
+        <button type="button" class="desk-icon" data-icon="about" aria-label="Open About Bohdan">
+          <span class="glyph"><img src="img/icons/addressbook.png" width="64" height="64" alt="" /></span>
+          <span>Bohdan Zhuravel</span>
+        </button>
+        <button type="button" class="desk-icon" data-icon="term" aria-label="Open Terminal">
+          <span class="glyph"><img src="img/icons/terminal.png" width="64" height="64" alt="" /></span>
+          <span>Terminal</span>
+        </button>
+      </div>
+
+      <div class="expose-dim" aria-hidden="true"></div>
+      <div class="expose-label" id="exposeLabel" hidden></div>
+
+      <main class="desktop">
+        <section class="window" id="about" data-app="Bohdan" role="dialog" aria-labelledby="name">
+          <div class="titlebar">
+            <div class="lights">
+              <button type="button" class="light close" data-close aria-label="Close"></button>
+              <button type="button" class="light min" data-min aria-label="Minimize"></button>
+              <button type="button" class="light zoom disabled" data-zoom aria-label="Zoom" disabled></button>
+            </div>
+            <h2>About Bohdan</h2>
+          </div>
+          <div class="about">
+            <picture>
+              <source srcset="img/portrait-round.webp" type="image/webp" />
+              <img class="avatar" src="img/portrait-round.png" width="480" height="480" alt="Portrait of Bohdan Zhuravel" />
+            </picture>
+            <h1 id="name">Bohdan Zhuravel</h1>
+            <p class="version">Software Engineer</p>
+            <dl>
+              <dt>Company</dt>
+              <dd><a href="https://www.talkable.com" target="_blank">Talkable</a></dd>
+              <dt>Email</dt>
+              <dd><a class="js-email" href="#">Send Email…</a></dd>
+            </dl>
+            <div class="buttons">
+              <a class="btn default" href="https://github.com/zhuravel" target="_blank" rel="me">GitHub</a>
+              <a class="btn" href="https://www.linkedin.com/in/bohdanzhuravel/" target="_blank">LinkedIn</a>
+            </div>
+            <p class="legal">TM &amp; © <span id="year">2026</span> Bohdan Zhuravel.<br />All Rights Reserved.</p>
+          </div>
+        </section>
+
+        <section class="window active" id="term" data-app="Terminal" data-drop="terminal" aria-label="Terminal">
+          <div class="titlebar">
+            <div class="lights">
+              <button type="button" class="light close" data-close aria-label="Close"></button>
+              <button type="button" class="light min" data-min aria-label="Minimize"></button>
+              <button type="button" class="light zoom" data-zoom aria-label="Zoom"></button>
+            </div>
+            <h2 id="termTitle">Terminal — bash — 80x24</h2>
+          </div>
+          <div class="screen" id="screen">
+            <div class="line">Last login: Wed Sep 23 16:32:10 on ttyp1</div>
+            <div class="line">Welcome to Darwin!</div>
+            <div class="line">bz:~ bohdan$ <span class="cursor"> </span></div>
+          </div>
+          <div class="grow"><span class="grow-box"></span></div>
+        </section>
+
+        <section class="window metal closed" id="finder" data-app="Finder" aria-label="Finder">
+          <div class="titlebar">
+            <div class="lights">
+              <button type="button" class="light close" data-close aria-label="Close"></button>
+              <button type="button" class="light min" data-min aria-label="Minimize"></button>
+              <button type="button" class="light zoom" data-zoom aria-label="Zoom"></button>
+            </div>
+            <h2>bohdan</h2>
+          </div>
+        </section>
+        <section class="window metal closed" id="safari" data-app="Safari" aria-label="Safari">
+          <div class="titlebar">
+            <div class="lights">
+              <button type="button" class="light close" data-close aria-label="Close"></button>
+              <button type="button" class="light min" data-min aria-label="Minimize"></button>
+              <button type="button" class="light zoom" data-zoom aria-label="Zoom"></button>
+            </div>
+            <h2>Safari</h2>
+          </div>
+        </section>
+      </main>
+
+      <div class="boot" id="boot" hidden aria-hidden="true">
+        <svg class="boot-apple" viewBox="0 0 24 24"><g clip-path="url(#apple-shape)"><rect width="24" height="24" fill="url(#boot-grey)" /></g></svg>
+        <div class="gear" id="gear"></div>
+      </div>
+
+      <nav class="dock" aria-label="Dock">
+        <button type="button" class="dock-item running" data-dock="finder" aria-label="Finder">
+          <img src="img/icons/finder.png" width="52" height="52" alt="" />
+          <span class="label">Finder</span>
+        </button>
+        <button type="button" class="dock-item" data-dock="safari" aria-label="Safari" hidden>
+          <img src="img/icons/safari.png" width="52" height="52" alt="" />
+          <span class="label">Safari</span>
+        </button>
+        <button type="button" class="dock-item" data-dock="about" aria-label="About Bohdan">
+          <img src="img/icons/addressbook.png" width="52" height="52" alt="" />
+          <span class="label">About Bohdan</span>
+        </button>
+        <button type="button" class="dock-item" data-dock="term" aria-label="Terminal">
+          <img src="img/icons/terminal.png" width="52" height="52" alt="" />
+          <span class="label">Terminal</span>
+        </button>
+        <span class="dock-sep" aria-hidden="true"></span>
+        <button type="button" class="dock-item" data-trash data-drop="trash" aria-label="Trash">
+          <span class="trash-icon"><img class="t-empty" src="img/icons/trash-empty.png" alt="" /><img class="t-full" src="img/icons/trash-full.png" alt="" /></span>
+          <span class="label">Trash</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="power" id="power" hidden><i class="led"></i></div>
+
+    <input id="input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal input" />
+
+    <script src="js/lazy.js"></script>
+    <script src="js/email.js"></script>
+    <script src="js/shell.js"></script>
+    <!-- Terminal toys: say, fortune, banner, emacs (M-x doctor / tetris), sudo kill -9 1 -->
+    <script src="js/toys.js"></script>
+    <script src="js/finder.js"></script>
+    <script src="js/safari.js"></script>
+    <script src="js/sounds.js"></script>
+    <script src="js/keysound.js"></script>
+    <script src="js/crt.js"></script>
+    <!-- Flurry, Panther's default screensaver (MIT, RoyCurtis/Flurry-WebGL @ ab9d489; see vendor/flurry/README.md),
+         loaded the first time the screensaver starts -->
+    <script src="js/screensaver.js"></script>
+    <script>
+      (function () {
+        var stacked = window.matchMedia("(max-width: 1040px), (max-height: 560px)");
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+        var $ = function (id) { return document.getElementById(id); };
+        var sound = window.BzSound || null;
+        function play(name) { if (sound) sound.play(name); }
+
+        // Clock (viewer's own time, like a real menu bar)
+        var clockFmt = new Intl.DateTimeFormat(undefined, { weekday: "short", hour: "numeric", minute: "2-digit" });
+        function tick() { $("clock").textContent = clockFmt.format(new Date()).replace(",", ""); }
+        tick();
+        setInterval(tick, 15000);
+        $("year").textContent = new Date().getFullYear();
+
+        // ── Windows: focus, close, zoom, drag
+        var wins = { finder: $("finder"), about: $("about"), term: $("term") };
+        if (window.BzSafari) {
+          wins.safari = $("safari");
+          document.querySelector('[data-dock="safari"]').hidden = false;
+          document.querySelector('[data-open="safari"]').hidden = false;
+        } else {
+          $("safari").remove();
+          document.querySelector('[data-dock="safari"]').remove();
+        }
+        var dock = {};
+        document.querySelectorAll("[data-dock]").forEach(function (b) { dock[b.getAttribute("data-dock")] = b; });
+        var active = "term";
+        var z = 10;
+        var shell, finder;
+        // An app keeps running (▲ in the Dock) after its window closes, until you Quit it
+        var running = { finder: true, about: true, term: true };
+        if (wins.safari) running.safari = false;
+        var tiles = {};
+
+        // name = null hands focus to the desktop (Finder), like clicking the wallpaper
+        function focusWin(name, slow) {
+          active = name;
+          Object.keys(wins).forEach(function (k) { wins[k].classList.toggle("active", k === name); });
+          var w = name && wins[name];
+          if (w) {
+            if (w.classList.contains("closed")) {
+              if (!running[name]) { running[name] = true; bounce(name); }
+              if (name === "term" && shell) shell.reset();
+            }
+            w.classList.remove("closed");
+            if (w.classList.contains("minimized")) restore(name, slow);
+            w.style.zIndex = ++z;
+          }
+          Object.keys(running).forEach(function (k) { dock[k].classList.toggle("running", running[k]); });
+          var app = w ? w.getAttribute("data-app") : "Finder";
+          $("appName").textContent = app;
+          document.querySelector("[data-quit]").textContent = "Quit " + app;
+          document.querySelector("[data-quit]").hidden = document.querySelector("[data-quit-sep]").hidden = !w || name === "finder";
+          document.querySelectorAll("[data-for]").forEach(function (el) { el.hidden = el.getAttribute("data-for") !== (name || "finder"); });
+          document.querySelector("[data-close-active]").disabled = !w;
+          syncTrash();
+          if (!shell) return;
+          if (name === "term") shell.focus();
+          else shell.blur();
+        }
+
+        function isShown(name) {
+          var c = wins[name].classList;
+          return !c.contains("closed") && !c.contains("minimized");
+        }
+
+        function bounce(name) {
+          var b = dock[name];
+          b.classList.remove("bounce");
+          void b.offsetWidth;
+          b.classList.add("bounce");
+        }
+
+        // ── Genie. Clone the window into horizontal strips; each frame, squeeze every
+        // strip between two cosine curves that funnel from the window into its Dock icon.
+        function canGenie() { return !stacked.matches && !reduced.matches; }
+        function lerp(a, b, t) { return a + (b - a) * t; }
+        function clamp(t) { return t < 0 ? 0 : t > 1 ? 1 : t; }
+
+        function genie(w, icon, reverse, slow, done) {
+          if (w.cancelGenie) w.cancelGenie();
+          var r = w.getBoundingClientRect();
+          var ir = icon.getBoundingClientRect();
+          var W0 = w.offsetWidth, H0 = w.offsetHeight;
+          var N = Math.max(28, Math.min(56, Math.round(r.height / 8)));
+          var iL = ir.left + 5, iR = ir.right - 5, iT = ir.top + 6, iH = ir.height - 12;
+          var span = Math.max(40, iT - r.top);
+          var src = w.querySelector(".screen");
+          var cs = getComputedStyle(w);
+          var layer = document.createElement("div");
+          var strips = [];
+          layer.className = "genie";
+
+          for (var i = 0; i < N; i++) {
+            var c = w.cloneNode(true);
+            c.removeAttribute("id");
+            c.querySelectorAll("[id]").forEach(function (el) { el.removeAttribute("id"); });
+            c.classList.remove("minimized", "closed", "dragging");
+            c.setAttribute("aria-hidden", "true");
+            c.style.cssText = "position:fixed;margin:0;left:" + r.left + "px;top:" + r.top + "px;width:" + W0 + "px;height:" + H0 +
+              "px;background-color:" + cs.backgroundColor + ";background-image:" + cs.backgroundImage.replace(/"/g, "'") +
+              ";transform-origin:0 0;transition:none;animation:none";
+            layer.appendChild(c);
+            strips.push(c);
+          }
+          $("machine").appendChild(layer);
+          if (src) strips.forEach(function (c) { c.querySelector(".screen").scrollTop = src.scrollTop; });
+
+          var dur = (slow ? 8 : 1) * 640;
+          var t0 = performance.now();
+          var raf;
+
+          function paint(t) {
+            var k = reverse ? 1 - t : t;
+            var f = clamp(k / .4);
+            var p1 = f * f * (3 - 2 * f); // funnel bends toward the icon
+
+            // Screen Y of a horizontal cut at v (0 = top edge, 1 = bottom edge).
+            // The bottom pours into the Dock first and the top follows.
+            function Y(v) {
+              var g = clamp((k - .18 - (1 - v) * .3) / .52);
+              return lerp(r.top + v * r.height, iT + v * iH, g * g);
+            }
+
+            // Left/right walls of the funnel at screen height y
+            function walls(y) {
+              var u = clamp((y - r.top) / span);
+              var sq = (1 - Math.cos(Math.PI * u)) / 2 * p1;
+              return [lerp(r.left, iL, sq), lerp(r.right, iR, sq)];
+            }
+
+            for (var i = 0; i < N; i++) {
+              var y0 = i / N * H0, y1 = (i + 1) / N * H0;
+              var Y0 = Y(i / N), Y1 = Y((i + 1) / N);
+              var a = walls(Y0), b = walls(Y1);
+              var L = Math.min(a[0], b[0]), R = Math.max(a[1], b[1]);
+              var sx = (R - L) / W0, sy = Math.max(1e-4, (Y1 - Y0) / (y1 - y0));
+              var st = strips[i].style;
+              st.transform = "matrix(" + sx + ",0,0," + sy + "," + (L - r.left) + "," + (Y0 - r.top - sy * y0) + ")";
+              // trapezoid, so the curved walls stay smooth instead of stair-stepped
+              st.clipPath = "polygon(" +
+                (a[0] - L) / sx + "px " + (y0 - .6) + "px," + (a[1] - L) / sx + "px " + (y0 - .6) + "px," +
+                (b[1] - L) / sx + "px " + (y1 + .6) + "px," + (b[0] - L) / sx + "px " + (y1 + .6) + "px)";
+            }
+            layer.style.opacity = k > .94 ? (1 - k) / .06 : 1;
+          }
+
+          function finish() { cancelAnimationFrame(raf); layer.remove(); w.cancelGenie = null; }
+          w.cancelGenie = finish;
+          paint(0);
+          raf = requestAnimationFrame(function frame(now) {
+            var t = Math.min(1, (now - t0) / dur);
+            var e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            paint(e);
+            if (t < 1) raf = requestAnimationFrame(frame);
+            else { finish(); done(); }
+          });
+        }
+
+        // Minimized window → a live thumbnail on the document side of the Dock, badged with its app icon
+        function makeTile(w, badgeIcon, onClick) {
+          var tile = document.createElement("button");
+          tile.type = "button";
+          tile.className = "dock-item dock-min";
+          tile.setAttribute("aria-label", w.querySelector(".titlebar h2").textContent);
+          var thumb = document.createElement("span");
+          thumb.className = "thumb";
+          var c = w.cloneNode(true);
+          c.removeAttribute("id");
+          c.querySelectorAll("[id]").forEach(function (el) { el.removeAttribute("id"); });
+          c.classList.remove("minimized", "closed", "dragging");
+          var W0 = w.offsetWidth, H0 = w.offsetHeight, k = 50 / Math.max(W0, H0);
+          var cs = getComputedStyle(w);
+          c.style.cssText = "width:" + W0 + "px;height:" + H0 + "px;top:" + (52 - H0 * k) / 2 + "px;left:" + (52 - W0 * k) / 2 + "px;transform:scale(" + k + ")" +
+            ";background-color:" + cs.backgroundColor + ";background-image:" + cs.backgroundImage.replace(/"/g, "'");
+          thumb.appendChild(c);
+          var src = w.querySelector(".screen");
+          var badge = document.createElement("span");
+          badge.className = "badge";
+          badge.appendChild(badgeIcon.cloneNode(true));
+          var label = document.createElement("span");
+          label.className = "label";
+          label.textContent = w.querySelector(".titlebar h2").textContent;
+          tile.appendChild(thumb);
+          tile.appendChild(badge);
+          tile.appendChild(label);
+          tile.addEventListener("click", onClick);
+          trashBtn.parentNode.insertBefore(tile, trashBtn);
+          if (src) c.querySelector(".screen").scrollTop = src.scrollTop;
+          return tile;
+        }
+
+        function dropTile(name) {
+          if (tiles[name]) { tiles[name].remove(); delete tiles[name]; }
+        }
+
+        function restore(name, slow) {
+          unminimize(wins[name], tiles[name], slow, function () { dropTile(name); });
+        }
+
+        function unminimize(w, tile, slow, done) {
+          if (!canGenie() || !tile) { done(); return w.classList.remove("minimized"); }
+          play("genie");
+          genie(w, tile, true, slow, function () { w.classList.remove("minimized"); done(); });
+        }
+
+        // Windows the desktop doesn't manage itself (the Finder's document viewers) minimize the same way.
+        // Returns restore(slow), which is also what clicking the Dock tile does.
+        function minimizeWindow(w, iconSrc, slow) {
+          var icon = new Image();
+          icon.src = iconSrc;
+          icon.alt = "";
+          function restore(slowly) {
+            w.style.zIndex = ++z;
+            unminimize(w, tile, slowly, function () { tile.remove(); });
+          }
+          var tile = makeTile(w, icon, function (e) { restore(e.shiftKey); });
+          genieInto(w, tile, slow);
+          w.classList.add("minimized");
+          return restore;
+        }
+
+        function genieInto(w, tile, slow) {
+          if (canGenie()) { play("genie"); genie(w, tile, false, slow, function () {}); }
+        }
+
+        // how: "closed" (red, fades) or "minimized" (yellow, genie into a Dock tile)
+        function hideWin(name, how, slow) {
+          var w = wins[name];
+          if (how === "minimized") {
+            tiles[name] = makeTile(w, dock[name].firstElementChild, function (e) { focusWin(name, e.shiftKey); });
+            genieInto(w, tiles[name], slow);
+          } else {
+            dropTile(name);
+            if (name === "term" && shell) shell.dispose(); // closing Terminal ends its login session
+          }
+          w.classList.add(how);
+          w.classList.remove("active");
+          var next = Object.keys(wins).filter(isShown).sort(function (a, b) {
+            return (+wins[b].style.zIndex || 0) - (+wins[a].style.zIndex || 0);
+          })[0];
+          focusWin(next || null);
+        }
+
+        function quit(name) {
+          dropTile(name);
+          wins[name].classList.remove("minimized");
+          running[name] = false;
+          if (!wins[name].classList.contains("closed")) hideWin(name, "closed");
+          else focusWin(active === name ? null : active);
+        }
+
+        // ── Terminal size, in whole Monaco cells and shown in the title like Terminal.app ("80x24").
+        // userSize is what the zoom button goes back to.
+        var termSize = { cols: 80, rows: 24 }, userSize = null;
+        function setTermSize(cols, rows) {
+          var el = $("screen"), atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 2;
+          termSize = { cols: cols, rows: rows };
+          el.style.setProperty("--cols", cols);
+          el.style.setProperty("--rows", rows);
+          $("termTitle").textContent = "Terminal — bash — " + cols + "x" + rows;
+          if (atBottom) el.scrollTop = el.scrollHeight; // the prompt stays in view
+        }
+
+        // Grow boxes (the ridged bottom-right corner): dragging one resizes its window. start(room) measures,
+        // given how far the window may grow before leaving the screen or covering the Dock, and returns
+        // resize(dx, dy). A size picked by hand replaces any zoom.
+        function bindGrowBox(win, box, start) {
+          box.addEventListener("pointerdown", function (e) {
+            if (e.button !== 0) return;
+            e.preventDefault();
+            var r = win.getBoundingClientRect(), x0 = e.clientX, y0 = e.clientY;
+            var resize = start({ x: Math.max(0, window.innerWidth - 8 - r.right), y: Math.max(0, window.innerHeight - 100 - r.bottom) });
+            win.classList.remove("zoomed");
+            win.classList.add("resizing");
+            box.setPointerCapture(e.pointerId);
+            function move(ev) { resize(ev.clientX - x0, ev.clientY - y0); }
+            function end() {
+              box.removeEventListener("pointermove", move);
+              box.removeEventListener("pointerup", end);
+              box.removeEventListener("pointercancel", end);
+              win.classList.remove("resizing");
+            }
+            box.addEventListener("pointermove", move);
+            box.addEventListener("pointerup", end);
+            box.addEventListener("pointercancel", end);
+          });
+        }
+
+        // Most windows resize by the pixel: the window's width and heightEl's height, kept in two CSS variables.
+        // The grow box goes in the window's corner unless one is given.
+        function growByPixels(win, heightEl, vars, minW, minH, box) {
+          if (!box) {
+            box = document.createElement("span");
+            box.className = "grow-box";
+            win.appendChild(box);
+          }
+          win.setAttribute("data-size-vars", vars.join(" ")); // a restart forgets these (see resetSession)
+          bindGrowBox(win, box, function (room) {
+            var w0 = win.offsetWidth, h0 = heightEl.offsetHeight;
+            return function (dx, dy) {
+              win.style.setProperty(vars[0], Math.min(w0 + room.x, Math.max(minW, w0 + dx)) + "px");
+              win.style.setProperty(vars[1], Math.min(h0 + room.y, Math.max(minH, h0 + dy)) + "px");
+            };
+          });
+        }
+
+        // Terminal resizes a whole cell at a time
+        bindGrowBox(wins.term, wins.term.querySelector(".grow-box"), function (room) {
+          var el = $("screen"), probe = document.createElement("span");
+          probe.textContent = "0000000000";
+          el.appendChild(probe);
+          var ch = probe.getBoundingClientRect().width / 10;
+          probe.remove();
+          var start = termSize, maxCols = start.cols + Math.floor(room.x / ch), maxRows = start.rows + Math.floor(room.y / 15);
+          userSize = null;
+          return function (dx, dy) {
+            var cols = Math.min(maxCols, Math.max(20, start.cols + Math.round(dx / ch)));
+            var rows = Math.min(maxRows, Math.max(5, start.rows + Math.round(dy / 15)));
+            if (cols !== termSize.cols || rows !== termSize.rows) setTermSize(cols, rows);
+          };
+        });
+
+        // Green = zoom: toggle between the user size and the most useful size (never a CSS scale)
+        function zoom(name) {
+          var w = wins[name];
+          if (name === "about" || stacked.matches) return;
+          var on = !w.classList.contains("zoomed");
+          w.classList.toggle("zoomed", on);
+          if (name !== "term") {
+            var fdy = on ? 30 - w.offsetTop : 0;
+            w.style.setProperty("--dy", fdy + "px");
+            w.dispatchEvent(new CustomEvent("moved", { detail: { dy: fdy } }));
+            return;
+          }
+          if (on) userSize = termSize;
+          var back = userSize || { cols: 80, rows: 24 };
+          var rows = on ? Math.max(24, Math.min(48, Math.floor((window.innerHeight - 22 - 96 - 40 - 4 - 15) / 15))) : back.rows;
+          setTermSize(back.cols, rows);
+          // keep the zoomed window between the menu bar and the Dock
+          var top = w.offsetTop, h = 22 + rows * 15 + 4 + 15;
+          var dy = on ? Math.min(0, window.innerHeight - 100 - (top + h)) : 0;
+          dy = Math.max(dy, 30 - top);
+          w.style.setProperty("--dy", dy + "px");
+          w.dispatchEvent(new CustomEvent("moved", { detail: { dy: dy } }));
+        }
+
+        function showFinder(slow) {
+          focusWin("finder", slow);
+          if (stacked.matches) wins.finder.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        // finder.open() reveals the window itself (through showFinder), then navigates
+        function openFinder(path, slow) {
+          if (finder) finder.open(path);
+          showFinder(slow);
+        }
+
+        function reveal(name, slow) {
+          if (name === "finder" && wins.finder.classList.contains("closed")) return openFinder([], slow);
+          focusWin(name, slow);
+          if (stacked.matches) wins[name].scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        // ── Dock
+        Object.keys(dock).forEach(function (name) {
+          dock[name].addEventListener("animationend", function () { dock[name].classList.remove("bounce"); });
+          dock[name].addEventListener("click", function (e) { reveal(name, e.shiftKey); });
+        });
+        var trashBtn = document.querySelector("[data-trash]");
+        trashBtn.addEventListener("click", function () { openFinder([".Trash"]); });
+
+        function syncTrash() {
+          var full = !!(window.BzFS && BzFS.trashCount());
+          trashBtn.classList.toggle("full", full);
+          document.querySelector("[data-empty-trash]").disabled = !full;
+        }
+        if (window.BzFS) BzFS.on(syncTrash);
+
+        // ── Desktop icons: click selects (and activates Finder), double-click opens
+        var icons = document.querySelectorAll(".desk-icon");
+        function deselect() { icons.forEach(function (i) { i.classList.remove("selected"); }); }
+        icons.forEach(function (icon) {
+          var name = icon.getAttribute("data-icon");
+          function open(slow) { deselect(); if (name === "hd") openFinder([], slow); else reveal(name, slow); }
+          icon.addEventListener("mousedown", function (e) { e.stopPropagation(); deselect(); icon.classList.add("selected"); focusWin(null); });
+          icon.addEventListener("dblclick", function (e) { open(e.shiftKey); });
+          icon.addEventListener("keydown", function (e) { if (e.key === "Enter") open(false); });
+        });
+        document.addEventListener("mousedown", deselect);
+
+        // ── Window chrome: lights, drag (title bar, or any metal [data-drag] surface), double-click to minimize
+        Object.keys(wins).forEach(function (name) {
+          var w = wins[name];
+          w.style.zIndex = name === "term" ? 11 : 10;
+          w.addEventListener("pointerdown", function () { if (active !== name) focusWin(name); });
+          w.querySelector("[data-close]").addEventListener("click", function (e) { e.stopPropagation(); hideWin(name, "closed"); });
+          w.querySelector("[data-min]").addEventListener("click", function (e) { e.stopPropagation(); hideWin(name, "minimized", e.shiftKey); });
+          w.querySelector("[data-zoom]").addEventListener("click", function () { zoom(name); });
+
+          var dx = 0, dy = 0, sx, sy, ox, oy, dragging = false, handle;
+          w.addEventListener("moved", function (e) { if (e.detail.dx != null) dx = e.detail.dx; dy = e.detail.dy; });
+          function isHandle(e) {
+            var h = e.target.closest(".titlebar, [data-drag]");
+            return h && w.contains(h) && !e.target.closest("button, input, a, .light") ? h : null;
+          }
+          w.addEventListener("pointerdown", function (e) {
+            if (stacked.matches || !(handle = isHandle(e))) return;
+            dragging = true; sx = e.clientX; sy = e.clientY; ox = dx; oy = dy;
+            w.classList.add("dragging");
+            handle.setPointerCapture(e.pointerId);
+          });
+          w.addEventListener("pointermove", function (e) {
+            if (!dragging) return;
+            dx = ox + e.clientX - sx;
+            dy = Math.max(oy + e.clientY - sy, 23 - w.offsetTop);
+            w.style.setProperty("--dx", dx + "px");
+            w.style.setProperty("--dy", dy + "px");
+          });
+          function endDrag() { dragging = false; w.classList.remove("dragging"); }
+          w.addEventListener("pointerup", endDrag);
+          w.addEventListener("pointercancel", endDrag);
+          w.addEventListener("dblclick", function (e) { if (isHandle(e)) hideWin(name, "minimized", e.shiftKey); });
+        });
+
+        document.addEventListener("pointerdown", function (e) {
+          if (e.target === document.body || e.target === $("machine") || e.target.classList.contains("desktop")) focusWin(null);
+        });
+
+        document.addEventListener("click", function (e) {
+          var o = e.target.closest("[data-open]");
+          if (o) reveal(o.getAttribute("data-open"));
+          if (e.target.closest("[data-clear]")) shell.clear();
+          if (e.target.closest("[data-empty-trash]") && finder) finder.emptyTrash();
+          if (e.target.closest("[data-close-active]") && active) hideWin(active, "closed");
+          if (e.target.closest("[data-quit]") && active && active !== "finder") quit(active);
+          var p = e.target.closest("[data-power]");
+          if (p) power(p.getAttribute("data-power"));
+        });
+
+        // ── Apple menu: Sleep, Restart, Shut Down, Log Out
+        // Restart happens in-page (a reload would lose the audio unlock, and the chime).
+        // Files persist like a real disk; windows and apps start fresh.
+        var powerEl = $("power");
+        var machine = $("machine");
+        var bootEl = $("boot");
+        var fast = reduced.matches;
+        for (var g = 0; g < 12; g++) {
+          var spoke = document.createElement("i");
+          spoke.style.transform = "rotate(" + g * 30 + "deg)";
+          spoke.style.opacity = (0.15 + g / 12 * 0.85).toFixed(2);
+          $("gear").appendChild(spoke);
+        }
+
+        function resetSession() {
+          closeMenus();
+          exitExpose();
+          cancelSleep();
+          var cancel = document.querySelector(".f-alert .f-cancel");
+          if (cancel) cancel.click();
+          document.querySelectorAll(".f-viewer, .f-menu, .panic, .dock-min").forEach(function (el) { el.remove(); });
+          // windows come back at their default size too, so none reopens hanging off the screen
+          document.querySelectorAll("[data-size-vars]").forEach(function (w) {
+            w.getAttribute("data-size-vars").split(" ").forEach(function (v) { w.style.removeProperty(v); });
+          });
+          released = false;
+          Object.keys(wins).forEach(function (k) {
+            var w = wins[k];
+            if (w.cancelGenie) w.cancelGenie();
+            dropTile(k);
+            w.classList.remove("minimized", "zoomed", "active");
+            w.classList.add("closed");
+            w.style.setProperty("--dx", "0px");
+            w.style.setProperty("--dy", "0px");
+            w.dispatchEvent(new CustomEvent("moved", { detail: { dx: 0, dy: 0 } }));
+          });
+          setTermSize(80, 24);
+          userSize = null;
+          running.about = running.term = false;
+          if (wins.safari) running.safari = false;
+          focusWin(null);
+        }
+
+        // login items: About and Terminal, in that order so Terminal ends up in front
+        function relaunch() { focusWin("about"); focusWin("term"); }
+
+        function shutDown(restart) {
+          machine.classList.remove("crt-on");
+          machine.classList.add("crt-off");
+          setTimeout(function () {
+            powerEl.classList.remove("sleeping");
+            powerEl.hidden = false;
+            resetSession();
+            if (restart) setTimeout(startUp, fast ? 50 : 900);
+          }, fast ? 20 : 520);
+        }
+
+        function startUp() {
+          bootEl.classList.remove("fade");
+          bootEl.hidden = false;
+          powerEl.hidden = true;
+          machine.classList.remove("crt-off");
+          machine.classList.add("crt-on");
+          play("chime");
+          relaunch();
+          setTimeout(function () { machine.classList.remove("crt-on"); }, 520);
+          setTimeout(function () {
+            bootEl.classList.add("fade");
+            setTimeout(function () { bootEl.hidden = true; }, 500);
+          }, fast ? 400 : 2700);
+        }
+
+        function logOut() {
+          resetSession();
+          setTimeout(relaunch, fast ? 50 : 700);
+        }
+
+        function power(what) {
+          // Restart, Shut Down and Log Out end the Terminal session at once, so nothing from it fires during the fade
+          if (what !== "sleep" && shell) shell.dispose();
+          if (what === "restart") return shutDown(true);
+          if (what === "off") return shutDown(false);
+          if (what === "logout") return logOut();
+          // Sleep: the screensaver first, then (still idle 2 minutes later) the display sleeps
+          if (window.BzScreensaver && !stacked.matches) {
+            BzScreensaver.start({ grace: 1500 });
+            cancelSleep();
+            sleepGraceEnd = Date.now() + 1500;
+            WAKE_EVENTS.forEach(function (t) { window.addEventListener(t, onWakeInput, true); });
+            sleepTimer = setTimeout(function () {
+              cancelSleep();
+              if (!BzScreensaver.running()) return;
+              BzScreensaver.stop();
+              powerEl.classList.add("sleeping");
+              powerEl.hidden = false;
+            }, 120000);
+            return;
+          }
+          powerEl.classList.add("sleeping");
+          powerEl.hidden = false;
+        }
+        var sleepTimer = null, sleepGraceEnd = 0, WAKE_EVENTS = ["keydown", "pointerdown", "pointermove", "wheel"];
+        // any real input after the grace period wakes it: forget the pending display sleep
+        function onWakeInput() { if (Date.now() >= sleepGraceEnd) cancelSleep(); }
+        function cancelSleep() {
+          clearTimeout(sleepTimer);
+          WAKE_EVENTS.forEach(function (t) { window.removeEventListener(t, onWakeInput, true); });
+        }
+
+        function wake(e) {
+          if (powerEl.hidden) return;
+          if (e) e.preventDefault();
+          if (powerEl.classList.contains("sleeping")) { powerEl.hidden = true; return; }
+          startUp(); // power button after Shut Down
+        }
+        powerEl.addEventListener("pointerdown", wake);
+        document.addEventListener("keydown", function (e) { if (!powerEl.hidden) wake(e); }, true);
+
+        // ── Exposé
+        var expose = null;
+        var exposeLabel = $("exposeLabel");
+
+        function exposeVars(w, ex, ey, es) {
+          w.style.setProperty("--ex", ex + "px");
+          w.style.setProperty("--ey", ey + "px");
+          w.style.setProperty("--es", es);
+        }
+
+        function enterExpose(mode) {
+          if (stacked.matches) return;
+          if (expose) { var same = expose.mode === mode; exitExpose(); if (same) return; }
+          closeMenus();
+          var shown = Object.keys(wins).filter(isShown);
+          if (!shown.length && mode !== "desktop") return;
+          var tiled = mode === "app" ? shown.filter(function (k) { return k === active; }) : shown;
+          if (mode === "app" && !tiled.length) tiled = shown;
+          expose = { mode: mode, names: shown };
+          machine.classList.add("exposing");
+          machine.classList.toggle("expose-desktop", mode === "desktop");
+          var vw = window.innerWidth, vh = window.innerHeight;
+
+          if (mode === "desktop") {
+            // every window slides off toward its nearest screen edge
+            shown.forEach(function (k) {
+              var r = wins[k].getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+              var toLeft = cx, toRight = vw - cx, toTop = cy, toBottom = vh - cy, m = Math.min(toLeft, toRight, toTop, toBottom);
+              var ex = m === toLeft ? -(r.right - 24) : m === toRight ? vw - r.left - 24 : 0;
+              var ey = m === toTop ? -(r.bottom - 46) : m === toBottom ? vh - r.top - 24 : 0;
+              exposeVars(wins[k], ex, ey, 1);
+            });
+            return;
+          }
+
+          // tile into a grid between the menu bar and the Dock, never enlarging
+          var cols = Math.ceil(Math.sqrt(tiled.length)), rows = Math.ceil(tiled.length / cols);
+          var top = 40, bottom = vh - 110, cw = (vw - 80) / cols, ch = (bottom - top) / rows;
+          tiled.forEach(function (k, i) {
+            var w = wins[k], r = w.getBoundingClientRect();
+            var s = Math.min(1, (cw * .86) / r.width, (ch * .82) / r.height);
+            var col = i % cols, row = Math.floor(i / cols);
+            var inRow = row === rows - 1 ? tiled.length - row * cols : cols;
+            var cx = (vw - inRow * cw) / 2 + (col + .5) * cw, cy = top + (row + .5) * ch;
+            exposeVars(w, cx - (r.left + r.width / 2), cy - (r.top + r.height / 2), s);
+          });
+          shown.forEach(function (k) { wins[k].classList.toggle("expose-dimmed", tiled.indexOf(k) < 0); });
+        }
+
+        function exitExpose() {
+          if (!expose) return;
+          Object.keys(wins).forEach(function (k) {
+            exposeVars(wins[k], 0, 0, 1);
+            wins[k].classList.remove("expose-dimmed", "expose-hover");
+          });
+          machine.classList.remove("expose-desktop");
+          exposeLabel.hidden = true;
+          expose = null;
+          setTimeout(function () { if (!expose) machine.classList.remove("exposing"); }, 340);
+        }
+
+        // while in Exposé, the next click picks a window (or just exits)
+        document.addEventListener("pointerdown", function (e) {
+          if (!expose || e.target.closest(".menubar, .dock")) return;
+          var w = e.target.closest(".window");
+          var name = w && Object.keys(wins).filter(function (k) { return wins[k] === w; })[0];
+          e.preventDefault();
+          e.stopPropagation();
+          exitExpose();
+          if (name && !w.classList.contains("expose-dimmed")) focusWin(name);
+        }, true);
+
+        document.addEventListener("pointerover", function (e) {
+          if (!expose || expose.mode === "desktop") return;
+          var w = e.target.closest(".window");
+          Object.keys(wins).forEach(function (k) { wins[k].classList.toggle("expose-hover", wins[k] === w && !w.classList.contains("expose-dimmed")); });
+          if (w && !w.classList.contains("expose-dimmed")) {
+            var r = w.getBoundingClientRect();
+            exposeLabel.textContent = w.querySelector(".titlebar h2").textContent;
+            exposeLabel.style.left = r.left + r.width / 2 + "px";
+            exposeLabel.style.top = r.top + r.height / 2 + "px";
+            exposeLabel.hidden = false;
+          } else exposeLabel.hidden = true;
+        });
+
+        document.addEventListener("keydown", function (e) {
+          var modes = { F9: "all", F10: "app", F11: "desktop" };
+          if (modes[e.key]) { e.preventDefault(); enterExpose(modes[e.key]); }
+          else if (expose && e.key === "Escape") { e.preventDefault(); exitExpose(); }
+        }, true);
+
+        document.addEventListener("click", function (e) {
+          var x = e.target.closest("[data-expose]");
+          if (x) setTimeout(function () { enterExpose(x.getAttribute("data-expose")); }, 0);
+        });
+        window.addEventListener("resize", exitExpose);
+
+        // ── Full Keyboard Access in dialog-like windows (About): Tab cycles that window's controls,
+        // Return/Enter or Space presses the focused one, Return with nothing focused presses the default button.
+        // Escape lets go (Tab moves on through the page) until the window is clicked again.
+        // Finder, Safari and Terminal keep their own keyboard handling.
+        var DIALOGS = { about: true }, released = false;
+        Object.keys(DIALOGS).forEach(function (k) { wins[k].addEventListener("pointerdown", function () { released = false; }); });
+        function focusables(w) {
+          return Array.prototype.filter.call(w.querySelectorAll("a[href], button:not([disabled]):not(.light), input:not([type=hidden])"), function (el) {
+            return el.offsetParent !== null;
+          });
+        }
+        document.addEventListener("keydown", function (e) {
+          if (e.defaultPrevented || !active || !DIALOGS[active] || released || e.metaKey || e.ctrlKey || e.altKey || expose || document.querySelector(".f-alert")) return;
+          var w = wins[active], el = document.activeElement, inside = el && w.contains(el) && el !== w;
+          // focus is on something else (a menu, the Finder's alert): leave its keys alone
+          if (!inside && el && el !== document.body && el !== w) return;
+          if (e.key === "Escape") { released = true; if (inside) el.blur(); return; }
+          if (e.key === "Tab") {
+            var list = focusables(w);
+            if (!list.length) return;
+            e.preventDefault();
+            var i = inside ? list.indexOf(el) : -1;
+            list[e.shiftKey ? (i <= 0 ? list.length - 1 : i - 1) : (i + 1) % list.length].focus();
+          } else if ((e.key === "Enter" || e.key === " ") && inside && el.matches("a, button")) {
+            e.preventDefault();
+            el.click();
+          } else if (e.key === "Enter" && !inside) {
+            var def = w.querySelector(".btn.default");
+            if (def) { e.preventDefault(); def.focus(); def.click(); }
+          }
+        }, true);
+
+        // ── Screensaver: Flurry after 2 minutes idle, or rest the pointer in the bottom-right corner
+        if (window.BzScreensaver) {
+          BzScreensaver.canStart = function () { return powerEl.hidden && bootEl.hidden && !expose && !document.querySelector(".panic"); };
+          BzScreensaver.bindIdle(120000);
+          BzScreensaver.bindHotCorner("br", 700);
+        }
+
+        // for add-ons (toys.js kernel panic → Restart)
+        window.BzDesktop = { power: function (what) { power(what); }, reveal: function (name) { reveal(name); }, expose: enterExpose };
+
+        // ── Menus
+        var menus = Array.prototype.slice.call(document.querySelectorAll(".menu"));
+        var anyOpen = false;
+        function closeMenus() {
+          menus.forEach(function (m) { m.classList.remove("open"); });
+          anyOpen = false;
+        }
+        // keep aria-expanded in sync however a menu opens
+        new MutationObserver(function (recs) {
+          recs.forEach(function (r) { var b = r.target.querySelector(":scope > button"); if (b) b.setAttribute("aria-expanded", String(r.target.classList.contains("open"))); });
+        }).observe(document.querySelector(".menubar"), { attributes: true, attributeFilter: ["class"], subtree: true });
+        menus.forEach(function (m) {
+          var btn = m.querySelector(":scope > button");
+          btn.addEventListener("mousedown", function (e) {
+            e.stopPropagation();
+            var wasOpen = m.classList.contains("open");
+            closeMenus();
+            if (!wasOpen) { m.classList.add("open"); anyOpen = true; }
+          });
+          btn.setAttribute("aria-haspopup", "menu");
+          btn.setAttribute("aria-expanded", "false");
+          // keyboard activation (Enter/Space) arrives as a click with detail 0
+          btn.addEventListener("click", function (e) {
+            if (e.detail !== 0) return;
+            var wasOpen = m.classList.contains("open");
+            closeMenus();
+            if (!wasOpen) {
+              m.classList.add("open"); anyOpen = true;
+              var first = m.querySelector(".dropdown a, .dropdown button:not([disabled]):not([hidden])");
+              if (first) first.focus();
+            }
+          });
+          m.querySelector(".dropdown").addEventListener("keydown", function (e) {
+            var items = Array.prototype.filter.call(m.querySelectorAll(".dropdown a, .dropdown button"), function (el) { return !el.disabled && !el.hidden && el.offsetParent !== null; });
+            var i = items.indexOf(document.activeElement);
+            if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+              e.preventDefault();
+              items[(i + (e.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus();
+            } else if (e.key === "Escape") {
+              e.preventDefault();
+              closeMenus();
+              btn.focus();
+            }
+          });
+          btn.addEventListener("mouseenter", function () {
+            if (anyOpen && !m.classList.contains("open")) { closeMenus(); m.classList.add("open"); anyOpen = true; }
+          });
+          m.querySelector(".dropdown").addEventListener("mousedown", function (e) { e.stopPropagation(); });
+          m.querySelector(".dropdown").addEventListener("click", closeMenus);
+        });
+        document.addEventListener("mousedown", closeMenus);
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeMenus();
+          // Finder › Empty Trash… (⇧⌘⌫) from the desktop; the Finder window handles it when it's in front
+          if (active === null && finder && e.metaKey && e.shiftKey && e.key === "Backspace") { e.preventDefault(); finder.emptyTrash(); }
+        });
+
+        // ── Menu extras: sound and CRT
+        var soundBtn = $("soundToggle"), crtBtn = $("crtToggle");
+        function syncExtras() {
+          soundBtn.hidden = !sound;
+          crtBtn.hidden = !window.BzCRT;
+          if (sound) soundBtn.classList.toggle("off", sound.muted());
+          if (window.BzCRT) crtBtn.classList.toggle("off", !BzCRT.enabled());
+        }
+        soundBtn.addEventListener("click", function () { sound.toggle(); syncExtras(); });
+        crtBtn.addEventListener("click", function () { BzCRT.toggle(); syncExtras(); });
+        if (sound && sound.bindClicks) sound.bindClicks();
+        // real Alps key recordings (keysound.js); the synthesized clicks are the fallback
+        if (window.BzKeys) BzKeys.bind();
+        else if (sound && sound.bindKeys) sound.bindKeys();
+        syncExtras();
+
+        // ── Terminal
+        shell = BzShell({
+          screen: $("screen"),
+          input: $("input"),
+          era: "panther",
+          intro: ["ls"],
+          isActive: function () { return active === "term"; },
+          openDir: function (path) { openFinder(path); },
+          openURL: function (url) { openURL(url); }
+        });
+
+        // ── Safari
+        var safari = null;
+        function openURL(url) {
+          if (!safari) return window.open(url, "_blank", "noopener");
+          safari.open(url);
+          reveal("safari");
+        }
+        if (wins.safari) {
+          safari = BzSafari({
+            win: wins.safari,
+            isActive: function () { return active === "safari"; },
+            reveal: function () { reveal("safari"); },
+            openExternal: function (url) { window.open(url, "_blank", "noopener"); },
+            growPixels: growByPixels,
+            typing: window.BzKeys && BzKeys.feed, // the page's keystrokes click too
+            sound: sound
+          });
+        }
+
+        // ── Finder
+        if (window.BzFinder) {
+          finder = BzFinder({
+            win: wins.finder,
+            fs: BzFS,
+            isActive: function () { return active === "finder"; },
+            reveal: function () { showFinder(); },
+            nextZ: function () { return ++z; },
+            minimize: minimizeWindow,
+            growBox: bindGrowBox,
+            growPixels: growByPixels,
+            openURL: function (url) { window.open(url, "_blank", "noopener"); },
+            dropOnTerminal: function (path) { focusWin("term"); shell.insertPath(path); },
+            sound: sound
+          });
+        }
+
+        focusWin("term");
+      })();
+    </script>
+  </body>
+</html>

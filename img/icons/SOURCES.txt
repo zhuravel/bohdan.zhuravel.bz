@@ -1,0 +1,377 @@
+Mac OS X 10.3 "Panther" icon provenance
+========================================
+All artwork below is (c) Apple Computer, Inc. 1983-2003. It is reproduced here
+for a personal retro-desktop simulation only. Not cleared for redistribution;
+the site owner will decide on publication separately.
+
+PRIMARY SOURCE (used for everything except doc-image's alternate note below)
+------------------------------------------------------------------------------
+Archive.org item : MacOSX10.3-Panther-2Z691-4633-A_2Z691-4586-A_2Z691-4587-A
+Item URL         : https://archive.org/details/MacOSX10.3-Panther-2Z691-4633-A_2Z691-4586-A_2Z691-4587-A
+File downloaded  : "Mac OS X Upgrade Disc 1.dmg" (514,577,383 bytes, UDIF/HFS+,
+                    zlib-compressed disk image of the actual Panther retail
+                    "Upgrade Disc 1")
+Direct link      : https://archive.org/download/MacOSX10.3-Panther-2Z691-4633-A_2Z691-4586-A_2Z691-4587-A/Mac%20OS%20X%20Upgrade%20Disc%201.dmg
+Second disc used : "Mac OS X Install Disc 2.dmg" (621,669,266 bytes) from the
+                    same item -- downloaded to hunt for Address Book, but it
+                    turned out Address Book.app was already present on Disc 1
+                    inside Essentials.pkg, so Disc 2 ended up unused for any
+                    delivered file. Mentioned for completeness/transparency.
+
+ERA VERIFICATION (hard evidence, not a guess)
+------------------------------------------------------------------------------
+The disc mounts as a real HFS+ volume containing a fully-expanded base system
+plus /System/Installation/Packages/*.pkg installer payloads. Read directly
+from the mounted volume:
+
+  /System/Library/CoreServices/SystemVersion.plist
+    ProductName            = Mac OS X
+    ProductVersion          = 10.3
+    ProductBuildVersion     = 7B85
+    ProductCopyright        = Apple Computer, Inc. 1983-2003
+
+Build 7B85 is documented by MacRumors, AppleInsider and BetaWiki as the
+Gold-Master / retail release build of Mac OS X 10.3 Panther, shipped to
+Apple Developer Connection on Oct 14 2003 and to retail on Oct 24 2003
+(Darwin 7.0.0). This is the actual shipping 10.3 client build -- not a
+beta/seed, not a 10.3.x point release, not Jaguar (10.2) and not Tiger (10.4).
+This is primary-source evidence (the OS's own installer payload identifying
+itself), stronger than a screenshot comparison.
+
+Secondary visual cross-check: reference screenshots were pulled from
+GUIdebook Gallery's Mac OS X 10.3 Panther screenshot set
+(https://guidebookgallery.org/screenshots/macosx103) --
+  - Dock: https://guidebookgallery.org/pics/gui/system/managers/applicationmanager/macosx103-1-1.png
+  - Finder sidebar: https://guidebookgallery.org/pics/gui/system/managers/filemanager/macosx103-1-1.png
+  - Terminal window: https://guidebookgallery.org/pics/gui/system/utilities/commandprompt/macosx103.png
+The Dock screenshot's Finder icon (blue two-tone face, left end of Dock) and
+Trash icon (wire-mesh basket, right end of Dock) visually match finder.png /
+trash-empty.png pixel-for-pixel in design. The Finder sidebar screenshot's
+home-folder house icon matches home.png. The Terminal screenshot confirms
+Darwin 7.0.0 (kernel that ships with 10.3) via `uname -a` in the window.
+
+EXTRACTION METHOD
+------------------------------------------------------------------------------
+1. `hdiutil attach -readonly -nobrowse` to mount the .dmg as a real HFS+
+   volume (no files copied/installed, strictly read-only).
+2. Most system/Finder icons (trash, folder, home, disk, Apple logo, Internet
+   location) are NOT inside a package payload -- they sit already-expanded at
+   /System/Library/CoreServices/SystemIcons.bundle/Contents/Resources/*.icns
+   directly on the mounted disc. Read straight from there.
+3. App-specific icons (Finder.app, Terminal.app, TextEdit.app, Preview.app,
+   "Address Book.app") live inside the installer payload
+   /System/Installation/Packages/Essentials.pkg/Contents/Archive.pax.gz.
+   Extracted with:
+     gzip -dc Archive.pax.gz | pax -r './Applications/TextEdit.app' \
+       './Applications/Utilities/Terminal.app' './Applications/Preview.app' \
+       './System/Library/CoreServices/Finder.app' \
+       './Applications/Address Book.app'
+   (pax is the classic BSD archiver Apple's installer format uses; selecting
+   specific top-level bundle paths avoids extracting the full ~600MB payload.)
+4. Each source .icns was rasterized with:
+     sips -s format png <file>.icns --out <name>.png
+   sips picks the icns family's largest available representation. Before
+   trusting the output, every source .icns was parsed by hand (small Python
+   script reading the 'icns' chunk table) to confirm it actually contains a
+   genuine 128x128 'it32' (24-bit RLE color) + 't8mk' (8-bit alpha mask) pair
+   -- i.e. a true native 128px asset, not something sips upscaled. All files
+   below except apple-blue.png confirmed it32/t8mk present.
+5. Every output PNG was viewed directly (Read tool) to confirm correct
+   subject, clean alpha (checked with `magick identify -format
+   "%[channels]"`), and no watermarks/artifacts, and dimensions were checked
+   with `magick identify`.
+
+FILE-BY-FILE
+------------------------------------------------------------------------------
+finder.png (128x128, RGBA)
+  Original file : Finder.icns
+  Path in image : Essentials.pkg -> ./System/Library/CoreServices/Finder.app/Contents/Resources/Finder.icns
+  Era confidence: HIGH. From the 7B85 GM build; visually matches GUIdebook's
+  10.3 Dock screenshot. This is Panther's "glassy" two-tone blue face, as
+  distinct from Jaguar's flatter 10.0-10.2 rendering and from Tiger/Leopard's
+  later, more saturated/gradient reworks (not independently re-verified
+  against a Jaguar or Tiger binary in this pass -- flagged "unsure" only in
+  the sense that no side-by-side pixel diff against 10.2/10.4 Finder.icns was
+  done; the build-number evidence for *this* file being 10.3 is solid).
+
+hd.png (128x128, RGBA)
+  Original file : Internal.icns
+  Path in image : /System/Library/CoreServices/SystemIcons.bundle/Contents/Resources/Internal.icns
+  Era confidence: HIGH (7B85 build). This is the generic icon Finder/Desktop
+  draws for the internal/startup volume (what shows as "Macintosh HD") before
+  any custom volume icon is applied; there is no separate "Macintosh HD"-named
+  resource in Mac OS X -- Internal.icns is the correct asset.
+
+terminal.png (128x128, RGBA)
+  Original file : icon.icns
+  Path in image : Essentials.pkg -> ./Applications/Utilities/Terminal.app/Contents/Resources/icon.icns
+  Era confidence: HIGH (7B85 build).
+
+trash-empty.png (128x128, RGBA)
+  Original file : TrashIcon.icns
+  Path in image : SystemIcons.bundle/Contents/Resources/TrashIcon.icns
+  Era confidence: HIGH (7B85 build + GUIdebook Dock screenshot match).
+
+trash-full.png (128x128, RGBA)
+  Original file : FullTrashIcon.icns
+  Path in image : SystemIcons.bundle/Contents/Resources/FullTrashIcon.icns
+  Era confidence: HIGH (7B85 build).
+
+folder.png (128x128, RGBA)
+  Original file : GenericFolderIcon.icns
+  Path in image : SystemIcons.bundle/Contents/Resources/GenericFolderIcon.icns
+  Era confidence: HIGH (7B85 build).
+
+home.png (128x128, RGBA)
+  Original file : HomeFolderIcon.icns
+  Path in image : SystemIcons.bundle/Contents/Resources/HomeFolderIcon.icns
+  Era confidence: HIGH (7B85 build + GUIdebook Finder-sidebar screenshot match).
+
+doc-text.png (128x128, RGBA)
+  Original file : txt.icns
+  Path in image : Essentials.pkg -> ./Applications/TextEdit.app/Contents/Resources/txt.icns
+  Era confidence: HIGH (7B85 build). This is TextEdit's own plain-text
+  document icon, exactly matching the request.
+
+doc-image.png (128x128, RGBA)
+  Original file : png.icns
+  Path in image : Essentials.pkg -> ./Applications/Preview.app/Contents/Resources/png.icns
+  Era confidence: HIGH (7B85 build).
+  NOTE: this is Apple's fixed, static per-format template icon that Preview/
+  Finder show for every .png file in this era (dog-eared page + small stock
+  landscape graphic + "PNG" banner). It is NOT a dynamically-rendered
+  thumbnail of any specific photo -- Panther predates QuickLook (added in
+  Leopard/10.5), so a live per-file photo thumbnail did not exist yet; this
+  exact artwork is what every PNG showed system-wide. If a completely
+  photo-free glyph is preferred instead, the alternative is
+  GenericDocumentIcon.icns (a blank dog-eared page, no image content at all,
+  also 128x128/RGBA/it32+t8mk) -- extracted to scratch but not copied to
+  deliverables since it no longer signals "image file." Flagging this
+  substitution choice explicitly per instructions rather than silently
+  deciding.
+
+webloc.png (128x128, RGBA)
+  Original file : InternetLocationHTTP.icns
+  Path in image : Essentials.pkg -> ./System/Library/CoreServices/Finder.app/Contents/Resources/InternetLocationHTTP.icns
+                  (identical asset also ships in SystemIcons.bundle)
+  Era confidence: HIGH (7B85 build). Confirmed via Finder.app's own
+  Info.plist, which maps this exact icns file to the "public.url"/http
+  Internet-location document type -- this is what a Safari/Finder-created
+  .webloc file displays.
+
+addressbook.png (128x128, RGBA) -- "nice to have"
+  Original file : AddressBook.icns
+  Path in image : Essentials.pkg -> ./Applications/Address Book.app/Contents/Resources/AddressBook.icns
+                  (note: the real bundle name has a space, "Address Book.app")
+  Era confidence: HIGH (7B85 build).
+
+apple-blue.png (16x16 only, grayscale+alpha) -- "nice to have"
+  Original file : AppleLogoIcon.icns
+  Path in image : SystemIcons.bundle/Contents/Resources/AppleLogoIcon.icns
+  Era confidence: HIGH that this is the correct/only Apple-menu glyph asset
+  shipped in the 7B85 build.
+  IMPORTANT CAVEAT -- UNSURE about the "blue" naming: decoding this PNG's
+  actual pixels shows only two colors, opaque black (0,0,0) and transparent.
+  There is no blue in it. A second, separate Apple-glyph resource in the same
+  bundle (AppleMenuIcon.icns) was also decoded and is likewise pure black.
+  No blue-colored Apple-logo UI asset was found anywhere in this build. The
+  Mac OS X Apple-menu glyph appears to have been solid black in every Aqua-era
+  release (10.0-10.4), at least in this system bundle. The "blue Aqua Apple"
+  the brief describes may be Apple's blue disc-label/box-art logo from that
+  era (marketing/packaging artwork, not a UI icon) rather than something that
+  ships inside the OS -- flagging this for the owner to confirm before use.
+  Also note: this icns genuinely contains only a 16x16 representation
+  (ics#+ics8, no is32/il32/it32) -- Apple never shipped this glyph larger
+  than 16px in this era since it was only ever drawn in the menu bar. Not
+  upscaled, per instructions.
+
+BONUS (not in the requested list, generated as a convenience; downscaled from
+the verified 128px PNGs above with ImageMagick, "downscaling from 128 is
+fine"):
+  home-32.png, home-16.png, hd-32.png, hd-16.png, folder-32.png, folder-16.png
+
+ITEMS NOT DELIVERED / STILL OPEN
+------------------------------------------------------------------------------
+- None of the required (1-9) items are missing. apple-blue.png's color is
+  flagged above as a genuine open question, not a missing file.
+- No Jaguar/Tiger substitution was needed for anything -- every delivered
+  icon came from the confirmed 10.3 (build 7B85) payload itself.
+- Small sidebar icons: only home/hd/folder were produced (per the brief's
+  example list); they are simple downscales, not separately-verified native
+  16/32px assets, even though the source .icns files do contain genuine
+  native is32 (32x32) and ics# (16x16) representations that could be decoded
+  pixel-for-pixel instead of resampled, if closer fidelity is wanted later.
+
+ADDENDUM 2026-09-23 -- safari.png
+==============================================================================
+(c) Apple Computer, Inc. 2003. Same terms as the header above: reproduced for
+a personal retro-desktop simulation only, not cleared for redistribution.
+
+SOURCE
+------------------------------------------------------------------------------
+Same archive.org item and same file as PRIMARY SOURCE above:
+  "Mac OS X Upgrade Disc 1.dmg", re-downloaded fresh for this pass from
+  https://archive.org/download/MacOSX10.3-Panther-2Z691-4633-A_2Z691-4586-A_2Z691-4587-A/Mac%20OS%20X%20Upgrade%20Disc%201.dmg
+  Byte size on re-download: 514,577,383 -- identical to the figure recorded
+  above, so it is the same image. Disc 2 was not needed.
+
+ERA VERIFICATION
+------------------------------------------------------------------------------
+Re-read on this mount (not copied from the section above):
+  /System/Library/CoreServices/SystemVersion.plist
+    ProductVersion = 10.3, ProductUserVisibleVersion = 10.3,
+    ProductBuildVersion = 7B85, ProductCopyright = Apple Computer, Inc. 1983-2003
+The Safari bundle itself identifies as Safari 1.1:
+  ./Applications/Safari.app/Contents/Info.plist
+    CFBundleIdentifier         = com.apple.Safari
+    CFBundleShortVersionString = 1.1
+    CFBundleVersion            = 100
+    CFBundleGetInfoString      = 1.1, Copyright 2003 Apple Computer, Inc.
+    CFBundleIconFile           = compass
+  ./Applications/Safari.app/Contents/version.plist
+    ProjectName = WebBrowser, BuildVersion = 30, SourceVersion = 1000000
+Safari 1.1 (v100) is the release Apple bundled with the 10.3 retail release.
+Safari 1.0 (v85) was the earlier download for Jaguar 10.2, and Safari 1.2
+(v125) came later, in early 2004, for 10.3.2 and up (this is from general
+knowledge and was not re-checked this pass). The archive dates also fit:
+compass.icns
+and Info.plist are dated Sep 13 2003, and the package is dated Sep 28 2003.
+
+EXTRACTION METHOD
+------------------------------------------------------------------------------
+1. `hdiutil attach -readonly -nobrowse` as before. Safari.app is not expanded
+   on the volume's /Applications (that directory holds only the installer).
+2. Located it by scanning each /System/Installation/Packages/*.pkg's
+   Contents/Archive.bom with `lsbom -s`, which lists every path without
+   decompressing the payload. Only Essentials.pkg lists Safari.app (294
+   paths). Its Resources/ holds two icns files: compass.icns (the app icon,
+   named by CFBundleIconFile) and document.icns (the .html/.webarchive
+   document icon, not used).
+3. Pulled just the three files needed:
+     gzip -dc Essentials.pkg/Contents/Archive.pax.gz | pax -r \
+       './Applications/Safari.app/Contents/Resources/compass.icns' \
+       './Applications/Safari.app/Contents/Info.plist' \
+       './Applications/Safari.app/Contents/version.plist'
+4. Parsed compass.icns by hand with the same Python chunk-table check as
+   above. The file is 49,402 bytes, and its 'icns' header length is also
+   49,402. Chunks:
+     ics# 72, is32 650, s8mk 264, ICN# 264, il32 2204, l8mk 1032,
+     it32 28516, t8mk 16392
+   A genuine native 128x128 it32 + t8mk pair is present
+   (t8mk = 8-byte header + 128*128 mask bytes), so there is no upscaling.
+5. `sips -s format png compass.icns --out safari.png`. The output was checked
+   with `magick identify` (128x128, srgba, TrueColorAlpha, 8-bit).
+   The alpha channel runs from 0 to 1. It is mostly fully opaque or fully
+   transparent, with anti-aliased edge pixels and a soft drop-shadow ramp.
+   The PNG was viewed both as-is and flattened onto a dark grey background
+   at 3x. It shows no halo, matte fringe, watermark or artifacts.
+6. Volume detached. The downloaded .dmg and all scratch extraction were
+   deleted afterwards.
+   SHA-256 compass.icns : 228a51f95d7744fbcf969fc055d87e4717e35f1e217cd9f93c1b6a0e8dfb6ec3
+   SHA-256 safari.png   : 97ab5c4751779e7deaef68a36f5589de2269d452cdba84b9ef512060f94e635c
+
+FILE-BY-FILE
+------------------------------------------------------------------------------
+safari.png (128x128, RGBA, 26,528 bytes)
+  Original file : compass.icns
+  Path in image : Essentials.pkg -> ./Applications/Safari.app/Contents/Resources/compass.icns
+  Era confidence: HIGH (7B85 build, and the bundle reports Safari 1.1 / v100).
+  The icon is the original Safari 1.x compass: a chrome bezel with a small
+  hanging ring at the top and tick marks, a glossy blue dial, a white
+  compass rose with N/E/S/W letters, and a red/white needle pointing NE.
+  CAVEAT: this is the Safari 1.1 icon. The browser window being built
+  elsewhere is Safari-1.2-styled, but no Safari 1.2 (v125, 10.3.2+) binary
+  was pulled for a side-by-side pixel diff. My understanding is that the
+  compass artwork did not change across the 1.x line; it was redone for
+  Safari 3 / Leopard. That point has not been independently verified in
+  this pass.
+
+ADDENDUM 2026-09-24 -- textedit.png, preview.png
+==============================================================================
+(c) Apple Computer, Inc. 2003. Same terms as the header above: reproduced for
+a personal retro-desktop simulation only, not cleared for redistribution.
+
+SOURCE
+------------------------------------------------------------------------------
+Same archive.org item and same file as PRIMARY SOURCE above:
+  "Mac OS X Upgrade Disc 1.dmg", re-downloaded fresh for this pass from
+  https://archive.org/download/MacOSX10.3-Panther-2Z691-4633-A_2Z691-4586-A_2Z691-4587-A/Mac%20OS%20X%20Upgrade%20Disc%201.dmg
+  Byte size on re-download: 514,577,383 -- identical to the figure recorded
+  above, so it is the same image. No second disc needed.
+
+ERA VERIFICATION
+------------------------------------------------------------------------------
+Re-read on this mount (not copied from the section above):
+  /System/Library/CoreServices/SystemVersion.plist
+    ProductVersion = 10.3, ProductUserVisibleVersion = 10.3,
+    ProductBuildVersion = 7B85, ProductCopyright = Apple Computer, Inc. 1983-2003
+The two app bundles' own Info.plists confirm their versions:
+  ./Applications/TextEdit.app/Contents/Info.plist
+    CFBundleIdentifier = com.apple.TextEdit, CFBundleShortVersionString = 1.3,
+    CFBundleVersion = 202, CFBundleIconFile = Edit.icns
+  ./Applications/Preview.app/Contents/Info.plist
+    CFBundleIdentifier = com.apple.Preview,
+    CFBundleGetInfoString = 2.1.0, Copyright 2002 Apple Computer Inc.,
+    CFBundleShortVersionString = 2.1.0, CFBundleVersion = 210,
+    CFBundleIconFile = preview.icns, LSMinimumSystemVersion = 10.3.0
+Both CFBundleIconFile values name the app-icon files used below. Neither is
+the document icon already used elsewhere in this repo: TextEdit's app icon
+is Edit.icns, not txt.icns (already delivered as doc-text.png); Preview's
+app icon is preview.icns, not png.icns (already delivered as doc-image.png).
+
+EXTRACTION METHOD
+------------------------------------------------------------------------------
+1. `hdiutil attach -readonly -nobrowse` as before.
+2. Both app bundles live inside the same installer payload used previously,
+   /System/Installation/Packages/Essentials.pkg/Contents/Archive.pax.gz.
+   Extracted with:
+     gzip -dc Archive.pax.gz | pax -r './Applications/TextEdit.app' \
+       './Applications/Preview.app'
+3. Parsed Edit.icns and preview.icns by hand with the same Python
+   icns-chunk-table script used for compass.icns. Results:
+     Edit.icns (TextEdit, 49,913 bytes; header length also 49,913):
+       ics# 72, ics8 264, is32 755, s8mk 264, ICN# 264, icl8 1032,
+       il32 2542, l8mk 1032, it32 27288, t8mk 16392
+     preview.icns (Preview, 47,420 bytes; header length also 47,420):
+       ics# 72, ics8 264, is32 743, s8mk 264, ICN# 264, icl8 1032,
+       il32 2472, l8mk 1032, it32 24877, t8mk 16392
+   Both contain a genuine native 128x128 it32 + t8mk pair (t8mk = 8-byte
+   header + 128*128 mask bytes = 16,392), so neither PNG below is upscaled.
+4. `sips -s format png Edit.icns --out textedit.png` and
+   `sips -s format png preview.icns --out preview.png`. Both outputs were
+   checked with `sips -g pixelWidth -g pixelHeight -g hasAlpha` (128x128,
+   hasAlpha: yes) and `magick identify` (8-bit sRGB, srgba channel set).
+   Each PNG was viewed as-is and flattened onto a dark grey (#333333)
+   background at 3x. Both show a clean alpha channel -- mostly fully
+   opaque/fully transparent with anti-aliased edges and a soft drop-shadow
+   ramp -- no halo, matte fringe, watermark or artifacts.
+5. Volume detached. The downloaded .dmg and all scratch extraction
+   (including the full TextEdit.app/Preview.app bundles) were deleted
+   afterwards.
+   SHA-256 Edit.icns    : ae8909a173201ea141e37b9c825e5f2b52624ecea233f77392bd313dfb90c769
+   SHA-256 preview.icns : a6bab7da72b7604aef26f542554e5d898989766ae173749384df48e2ea62fc77
+   SHA-256 textedit.png : 7c2d03cba08753a3cd16e67a58d30927a01e6138ed8099536a07042529a021d7
+   SHA-256 preview.png  : 630f65710ca1421fff91f8009ba0a82b0af7c2bcd01d9ac138b3b0cd7dd90709
+
+FILE-BY-FILE
+------------------------------------------------------------------------------
+textedit.png (128x128, RGBA, 19,990 bytes)
+  Original file : Edit.icns
+  Path in image : Essentials.pkg -> ./Applications/TextEdit.app/Contents/Resources/Edit.icns
+  Era confidence: HIGH (7B85 build; TextEdit 1.3 / build 202, the version
+  shipped with 10.3 retail). This is TextEdit's application icon: a lined
+  notepad (white sheet over a yellow sheet) with a mechanical pencil laid
+  across it -- distinct from txt.icns (doc-text.png), which is the plain
+  generic document icon TextEdit assigns to .txt files, not the app icon
+  itself.
+
+preview.png (128x128, RGBA, 29,098 bytes)
+  Original file : preview.icns
+  Path in image : Essentials.pkg -> ./Applications/Preview.app/Contents/Resources/preview.icns
+  Era confidence: HIGH (7B85 build; Preview 2.1.0 / build 210, the version
+  shipped with 10.3 retail, LSMinimumSystemVersion 10.3.0). This is
+  Preview's application icon: a fanned stack of photos (beach/portrait
+  snapshot on top of a landscape photo) under a chrome loupe/magnifying
+  glass -- distinct from png.icns (doc-image.png), which is the generic
+  per-format document icon Preview/Finder show for .png files, not the app
+  icon itself.

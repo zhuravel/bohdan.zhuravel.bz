@@ -1,0 +1,137 @@
+bz keyboard sounds -- sources, licenses, and processing notes
+================================================================
+
+SOURCE RECORDING (the only one used)
+-------------------------------------
+Title:    "Typing on Apple Standard Keyboard (ALPS SKCM Orange)"
+Author:   robni7
+Page:     https://freesound.org/people/robni7/sounds/680714/
+Fetched:  https://cdn.freesound.org/previews/680/680714_3242494-hq.mp3
+          (Freesound's logged-out "-hq" MP3 preview, 48kHz stereo, ~213kbps;
+          no Freesound account/API key was used, so the lossless/original
+          upload -- described on the page as a 14.1s stereo 96kHz file --
+          was not accessible. The preview is what was sliced.)
+License:  CC0 1.0 Universal (Public Domain Dedication)
+          https://creativecommons.org/publicdomain/zero/1.0/
+          License confirmed by fetching the sound page's HTML directly and
+          finding the literal CC0 license URL in the page (no login,
+          no API). A local copy of that page is kept for the record at
+          /private/tmp/claude-501/.../scratchpad/keys/license_evidence/robni7_680714.html
+          (not shipped with the site; scratchpad only).
+Keyboard: Apple M0118 ("Apple Standard Keyboard"), Alps SKCM Orange switches
+          (per the recording's own title/description), close-miked with a
+          Behringer C2. This matches the requested primary target family
+          (Apple Extended/Standard Keyboard, Alps SKCM Orange) closely
+          enough to use as the sole source -- one board, one session, per
+          the brief.
+
+Every WAV embedded in keysound-data.js is a slice of this one 14.1-second
+recording. No other keyboard, pack, or synthesized material was mixed in.
+
+Candidates that were considered and NOT used
+----------------------------------------------
+- BrodieSound "Typing.wav" (CC0) -- Apple Pro Keyboard. Rejected: that
+  keyboard is a scissor/membrane design, not Alps mechanical, so mixing it
+  in would break the "one board, one session" rule and sound inconsistent
+  next to real Alps clicks.
+- zrrion "Keyboard Typing Sounds" (CC0) -- an Alps-made SM-FKB401 with SKCC
+  switches, a different Alps switch family from the SKCM Orange target.
+  Kept as a documented fallback only; not used, to avoid mixing switch
+  families.
+- cfork "computer_keyboard_hacking.aif" (CC BY 4.0) -- labeled "Apple
+  extended keyboard, 2004," but only 3.3s, mono, lo-fi. Not needed once the
+  robni7 recording turned out to have enough clean material by itself; kept
+  as a documented CC-BY fallback (would need "by cfork" attribution if
+  ever used).
+- Wikimedia "Modelm.ogg" (public domain) -- IBM Model M buckling spring.
+  Explicitly out of scope: Model M is a different mechanism (buckling
+  spring vs. Alps click) and was to be a separate theme at most, never
+  mixed into an Apple/Alps set.
+- BigSoundBank s0229 "Computer Keyboard" (CC0) -- unspecified/likely modern
+  board, not vintage-specific. Not used.
+- OpenGameArt "Wandering Door" and Nesdood007's kde-plasma-ringtones pack:
+  CC BY-SA, rejected as a share-alike license (avoidable copyleft).
+- "Bucklespring" (GPL-2 sound pack): rejected, its WAVs are not usable
+  under a GPL-2 source without copyleft implications for this static site.
+
+How individual keystrokes were isolated
+------------------------------------------
+The source is continuous "type across the keyboard" demo audio, not
+isolated single-key recordings, so there is no per-key ground truth (no
+video, no keylogger reference). Processing (numpy/scipy, see scripts in
+the scratchpad):
+ 1. Envelope + onset detection (1ms peak-hold envelope, threshold ~16dB
+    above the session noise floor of -57.6dBFS) found 195 candidate
+    transients across the clip.
+ 2. Adjacent transients were greedily paired as (press, release) when they
+    were 20-115ms apart and the second was at least 3dB quieter than the
+    first (consistent with Alps SKCM's louder bottom-out/press click vs.
+    its quieter upstroke/release click). Unpaired loud transients were kept
+    as press-only (no captured release for that instance).
+ 3. Each slice's window ran from ~1.5ms before the onset to either its own
+    natural decay back to within 6dB of the noise floor, or the start of
+    the next accepted transient minus a small guard -- whichever came
+    first. Any slice that still had another accepted transient fall inside
+    its window was trimmed to end just before it, or dropped if that left
+    under 20ms of audio. This is why durations run shorter than the
+    120/90ms (letters), 200/160ms (space), 160/120ms (Return), 140/110ms
+    (Backspace/Shift) guide figures: the source is fast continuous typing,
+    and not intruding on a neighboring keystroke took priority over hitting
+    a target length.
+ 4. A short edge declick (0.4ms raised-cosine) at the very start and a
+    10-25ms cosine fade-out at the tail were applied. A gentle downward
+    expander (6dB-above-floor knee, ~10dB max attenuation, smoothed, never
+    touching the first 15ms of attack) reduced hiss in the decay without
+    gating the click itself.
+
+Deriving Space / Return / Backspace / Shift ("derive it musically")
+------------------------------------------------------------------------
+Because slices are anonymous transients from a typing demo, which key
+produced which sample cannot be identified directly. Per the brief's
+explicit allowance to derive missing classes honestly:
+ - The loudest + longest-duration press/release candidates (physically
+   consistent with heavier, stabilized keys) were assigned, in order, to
+   Space, then Return, then Backspace.
+ - The shortest + quietest candidates were assigned to the Shift/modifier
+   class (a light tap has less energy and a shorter decay).
+ - Everything else (the large majority) became the Letter pool.
+This is an approximation based on acoustic weight, not a verified per-key
+identification, and is noted here so it isn't mistaken for one.
+
+Loudness normalization
+--------------------------
+One session-wide gain was computed and applied to every slice (press and
+release, all classes alike), so natural relationships are preserved:
+space/Return stay more prominent than ordinary letters, and releases keep
+whatever quieter level they were recorded at relative to their paired
+press. The gain was chosen to put the median ordinary press near -12dBFS,
+but was pulled down to -2.71dB (instead of the +2.20dB that would have hit
+-12dBFS exactly) so the single loudest slice in the set (a space-bar
+release peaking at -3.3dBFS raw, verified not clipped) stays at or under
+-6dBFS -- the brief's explicit ceiling took priority over the median
+target when the two conflicted. Median ordinary press after normalization
+sits near -16.9dBFS in the file; the player applies its own additional
+per-class gain on top of this at playback time (see keysound.js and the
+verification report for the final numbers heard through the graph).
+
+Format: mono 44.1kHz 16-bit PCM WAV, base64-embedded in keysound-data.js.
+
+Sample counts (final, per class)
+------------------------------------
+  letter:     45 press, 28 release  (minimum required: 8 press / 5 release)
+  space:       5 press,  4 release  (minimum required: 3 / 3)
+  return:      5 press,  4 release  (minimum required: 3 / 3)
+  backspace:   5 press,  4 release  (minimum required: 3 / 3)
+  modifier:    6 press,  4 release  (minimum required: 3 / 2)
+
+All samples are genuine distinct recorded hits -- none were duplicated or
+pitch-shifted to pad these counts ("more real variants beat pitch-shifted
+copies").
+
+File sizes
+--------------
+  keysound-data.js: ~857 KB  (base64 WAV payload + attribution header)
+  keysound.js:       ~18 KB  (player)
+  total:            ~875 KB, under the 1.5MB budget (keysound.js lazy-loads
+                    keysound-data.js via a dynamically injected <script>
+                    tag, so this never blocks the initial page load).
