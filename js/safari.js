@@ -330,6 +330,10 @@
         var display = computeFinalDisplay(currentPath, currentTail);
         setAddress(display);
         pushHistory({ display: display, file: siteFileFor(currentPath) + currentTail, path: currentPath, tail: currentTail });
+      } else if (d.bzSafari === "pointer") {
+        // a click in the page: the window comes forward and menus close, as for a click anywhere else on it
+        if (d.type === "pointerdown") { if (opts.activate) opts.activate(); closeNews(); }
+        if (sound && sound.feed) sound.feed({ type: String(d.type), button: +d.button || 0 });
       } else if (d.bzSafari === "key") {
         if (opts.typing) opts.typing({ type: String(d.type), code: String(d.code || ""), key: String(d.key || ""), isComposing: !!d.isComposing });
       } else if (d.bzSafari === "loaded") {

@@ -429,6 +429,13 @@
     } catch (e) {}
   }
 
+  // Clicks in another frame (the page in Safari), forwarded by its bridge: they sound the same.
+  // e is {type: "pointerdown" | "pointerup", button}.
+  function feed(e) {
+    if (e.type === "pointerdown") { unlock(); onPointerDown(e); }
+    else if (e.type === "pointerup") onPointerUp(e);
+  }
+
   function bindClicks() {
     if (boundClicks) return;
     boundClicks = true;
@@ -444,7 +451,8 @@
     setMuted: setMuted,
     toggle: toggle,
     bindClicks: bindClicks,
-    bindKeys: bindKeys
+    bindKeys: bindKeys,
+    feed: feed
   };
 
   // Test-only hook: renders a named sound's graph into any given AudioContext

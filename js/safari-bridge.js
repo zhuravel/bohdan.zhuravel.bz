@@ -26,6 +26,10 @@
     }, true);
   });
   window.addEventListener("blur", function () { send({ bzSafari: "key", type: "blur" }); });
+  // ...and clicking here clicks too, and brings Safari's window to the front
+  ["pointerdown", "pointerup"].forEach(function (type) {
+    document.addEventListener(type, function (e) { send({ bzSafari: "pointer", type: type, button: e.button }); }, true);
+  });
   window.addEventListener("message", function (e) {
     if (e.source === window.parent && e.data && e.data.bzSafari === "state") {
       document.documentElement.classList.toggle("inactive", !e.data.active);

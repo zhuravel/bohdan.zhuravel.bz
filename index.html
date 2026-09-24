@@ -1530,15 +1530,19 @@
           setTimeout(function () { if (!expose) machine.classList.remove("exposing"); }, 340);
         }
 
-        // while in Exposé, the next click picks a window (or just exits)
+        // while in Exposé, the next click picks a window (or just exits): true if the window should come forward
+        function exposePick(name) {
+          var dimmed = !!name && wins[name].classList.contains("expose-dimmed");
+          exitExpose();
+          return !!name && !dimmed;
+        }
         document.addEventListener("pointerdown", function (e) {
           if (!expose || e.target.closest(".menubar, .dock")) return;
           var w = e.target.closest(".window");
           var name = w && Object.keys(wins).filter(function (k) { return wins[k] === w; })[0];
           e.preventDefault();
           e.stopPropagation();
-          exitExpose();
-          if (name && !w.classList.contains("expose-dimmed")) focusWin(name);
+          if (exposePick(name)) focusWin(name);
         }, true);
 
         document.addEventListener("pointerover", function (e) {
@@ -1704,6 +1708,11 @@
             win: wins.safari,
             isActive: function () { return active === "safari"; },
             reveal: function () { reveal("safari"); },
+            // a click in its page counts as a click on the window, in Exposé too
+            activate: function () {
+              if (expose && !exposePick("safari")) return;
+              if (active !== "safari") focusWin("safari");
+            },
             openExternal: function (url) { window.open(url, "_blank", "noopener"); },
             growPixels: growByPixels,
             typing: window.BzKeys && BzKeys.feed, // the page's keystrokes click too
