@@ -389,16 +389,13 @@
 (function () {
   var el = document.getElementById("hitCounter");
   if (!el) return;
-  // every visitor starts as number 427, like a certain office employee
-  var n = 426;
+  var FIRST = 427; // every visitor starts here, like a certain office employee
+  var n = FIRST;
   try {
-    var stored = window.localStorage.getItem("bz2004.visitor");
-    n = stored ? (parseInt(stored, 10) || 426) : 426;
-    n += 1;
+    var stored = parseInt(window.localStorage.getItem("bz2004.visitor"), 10);
+    n = stored ? stored + 1 : FIRST;
     window.localStorage.setItem("bz2004.visitor", String(n));
-  } catch (e) {
-    n = 427;
-  }
+  } catch (e) {}
   var s = String(n);
   while (s.length < 6) s = "0" + s;
   var digits = el.getElementsByTagName("span");
