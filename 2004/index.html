@@ -326,6 +326,7 @@
 
       <h2 class="section first">Under Construction</h2>
       <div class="construction" role="img" aria-label="Under construction"><span>UNDER&nbsp;CONSTRUCTION</span></div>
+      <p class="fine-print">Under construction since 2004. Any day now.</p>
 
       <h2 class="section" id="about">About Me</h2>
       <p>
@@ -355,7 +356,7 @@
       <div class="counter-wrap">
         <span class="counter-label">You are visitor number</span>
         <span class="counter-digits" id="hitCounter" aria-label="hit counter">
-          <span class="digit">0</span><span class="digit">0</span><span class="digit">0</span><span class="digit">0</span><span class="digit">4</span><span class="digit">2</span>
+          <span class="digit">0</span><span class="digit">0</span><span class="digit">0</span><span class="digit">4</span><span class="digit">2</span><span class="digit">7</span>
         </span>
         <noscript>&nbsp;(counter requires JavaScript, same as it did in 2004)</noscript>
       </div>
@@ -388,14 +389,15 @@
 (function () {
   var el = document.getElementById("hitCounter");
   if (!el) return;
-  var n = 41;
+  // every visitor starts as number 427, like a certain office employee
+  var n = 426;
   try {
-    var stored = window.localStorage.getItem("bz2004.hits");
-    n = stored ? (parseInt(stored, 10) || 41) : 41;
+    var stored = window.localStorage.getItem("bz2004.visitor");
+    n = stored ? (parseInt(stored, 10) || 426) : 426;
     n += 1;
-    window.localStorage.setItem("bz2004.hits", String(n));
+    window.localStorage.setItem("bz2004.visitor", String(n));
   } catch (e) {
-    n = 42;
+    n = 427;
   }
   var s = String(n);
   while (s.length < 6) s = "0" + s;
